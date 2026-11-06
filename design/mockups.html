@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Strikers 小程序 · 设计稿 v1</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --ink:#0A1B33; --ink2:#1D2F4A; --muted:#7B8AA3; --faint:#A9B6C9;
+    --blue:#1F6FEB; --blue-d:#0F4FC4; --blue-l:#E9F0FE; --blue-xl:#F3F7FF;
+    --bg:#F4F7FC; --line:#E4EAF3; --white:#fff;
+    --green:#0FA968; --amber:#F5A524; --red:#E5484D; --orange:#E8590C;
+    --shadow:0 10px 30px rgba(10,27,51,.10);
+  }
+  body{
+    background:
+      radial-gradient(900px 500px at 15% -5%, #16305A 0%, transparent 60%),
+      radial-gradient(700px 500px at 95% 10%, #102A4E 0%, transparent 55%),
+      #0A1526;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;
+    color:#fff; padding:48px; width:1285px; -webkit-font-smoothing:antialiased;
+  }
+  .board-head{height:64px; display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:32px;}
+  .brand{font-size:26px; font-weight:800; letter-spacing:.14em;}
+  .brand span{display:block; font-size:12px; font-weight:500; letter-spacing:.24em; color:#7FA6E0; margin-top:6px;}
+  .meta{font-size:12px; color:#7FA6E0; letter-spacing:.06em; text-align:right; line-height:1.7;}
+
+  .grid{display:grid; grid-template-columns:repeat(3,375px); gap:40px 32px;}
+  figure{width:375px;}
+  figcaption{height:36px; padding-top:12px; font-size:12px; color:#8CA6C9; letter-spacing:.08em; text-align:center;}
+
+  /* ============ phone shell ============ */
+  .phone{
+    width:375px; height:812px; border-radius:38px; overflow:hidden; position:relative;
+    background:#fff; box-shadow:0 30px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.08);
+  }
+  .screen{height:100%; display:flex; flex-direction:column; background:var(--bg); color:var(--ink);}
+  .statusbar{height:44px; flex:0 0 44px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 22px; font-size:13px; font-weight:600; position:relative; z-index:5;}
+  .sb-r{display:flex; gap:5px; align-items:center; font-size:10px; letter-spacing:-1px;}
+  .navbar{height:44px; flex:0 0 44px; display:flex; align-items:center; justify-content:space-between; padding:0 18px; font-size:16px; font-weight:600;}
+  .nav-side{width:44px; font-size:20px; color:var(--ink2); display:flex; align-items:center; gap:6px;}
+  .nav-side.r{justify-content:flex-end;}
+  .body{flex:1; overflow:hidden; position:relative;}
+  .pad{padding:0 18px;}
+
+  /* ============ atoms ============ */
+  .muted{color:var(--muted);}
+  .tiny{font-size:11px;}
+  .sm{font-size:13px;}
+  .row{display:flex; align-items:center;}
+  .between{justify-content:space-between;}
+  .gap8{gap:8px;} .gap12{gap:12px;}
+  .avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:700;color:#fff;background:linear-gradient(135deg,#3C86FF,#1F5FD0);flex:0 0 auto;}
+  .avatar.g2{background:linear-gradient(135deg,#6FA8FF,#2C6BE0);}
+  .avatar.g3{background:linear-gradient(135deg,#9CC2FF,#4B7FE8);}
+  .avatar.g4{background:linear-gradient(135deg,#2E5FA8,#0A2A5E);}
+  .avatar.sm{width:32px;height:32px;font-size:12px;}
+  .avatar.lg{width:56px;height:56px;font-size:19px;}
+  .card{background:#fff; border-radius:16px; box-shadow:var(--shadow); border:1px solid rgba(228,234,243,.9);}
+  .tag{display:inline-flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:6px;
+    font-size:11px; font-weight:600; letter-spacing:.02em;}
+  .tag.blue{background:var(--blue-l); color:var(--blue-d);}
+  .tag.green{background:#E7F7F0; color:#0B8A55;}
+  .tag.amber{background:#FFF4E0; color:#B06F00;}
+  .tag.red{background:#FEECEC; color:#C42929;}
+  .tag.gray{background:#EEF1F6; color:#6B7A90;}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;}
+  .btn{height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center;
+    font-size:15px; font-weight:600; letter-spacing:.04em;}
+  .btn-primary{background:linear-gradient(135deg,#2C7BF5,#1557D6); color:#fff; box-shadow:0 8px 18px rgba(31,111,235,.30);}
+  .btn-ghost{background:#fff; color:var(--blue); border:1.5px solid #C9DCFA;}
+  .btn-dark{background:var(--ink); color:#fff;}
+  .btn-sm{height:34px; border-radius:10px; padding:0 14px; font-size:13px; display:inline-flex; align-items:center; justify-content:center; font-weight:600;}
+  .divider{height:1px; background:var(--line);}
+
+  /* tab bar */
+  .tabbar{height:76px; flex:0 0 76px; background:rgba(255,255,255,.97); border-top:1px solid var(--line);
+    display:flex; padding-bottom:20px; backdrop-filter:blur(10px);}
+  .tab{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+    font-size:10px; color:var(--faint); font-weight:500;}
+  .tab.on{color:var(--blue); font-weight:700;}
+  .tab svg{width:22px;height:22px;}
+
+  /* ============ 1 首页 ============ */
+  .hero{background:linear-gradient(155deg,#0B2344 0%,#123A76 55%,#1B54A8 100%); color:#fff;
+    padding:0 20px 64px; position:relative; margin-top:-44px; padding-top:56px;}
+  .hero::after{content:""; position:absolute; right:-40px; top:20px; width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle,rgba(80,150,255,.35),transparent 65%);}
+  .team-name{font-size:11px; letter-spacing:.34em; color:#9CC2FF; font-weight:600;}
+  .greet{font-size:24px; font-weight:800; margin-top:6px; letter-spacing:.01em;}
+  .greet-sub{font-size:12px; color:#A9C4EA; margin-top:6px;}
+  .icon-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;}
+  .next-card{margin:-46px 18px 0; padding:16px; position:relative; z-index:2;}
+  .match-title{font-size:17px; font-weight:800; letter-spacing:.02em;}
+  .match-meta{font-size:12px; color:var(--muted); margin-top:6px;}
+  .progress{height:6px;border-radius:4px;background:#EDF2FA;overflow:hidden;margin-top:12px;}
+  .progress i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#2C7BF5,#5FA0FF);}
+  .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 18px 0;}
+  .q{background:#fff;border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:7px;
+    font-size:11px;color:var(--ink2);font-weight:600; box-shadow:0 6px 16px rgba(10,27,51,.06);}
+  .q i{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:var(--blue-l);color:var(--blue);}
+  .q i svg{width:18px;height:18px;}
+  .bday{margin:14px 18px 0;padding:12px 14px;display:flex;align-items:center;gap:12px;}
+  .alert{margin:12px 18px 0;padding:11px 14px;border-radius:12px;background:#FFF7ED;border:1px solid #FFE0C2;
+    display:flex;align-items:center;gap:10px;font-size:12px;color:#9A4A05;}
+  .sec-title{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 8px;}
+  .sec-title b{font-size:14px;letter-spacing:.04em;}
+  .notice{display:flex;gap:10px;align-items:center;padding:10px 18px;}
+  .notice .bar{width:3px;height:30px;border-radius:2px;background:var(--blue);opacity:.8;}
+  .notice .txt b{display:block;font-size:13px;font-weight:600;}
+  .notice .txt span{font-size:11px;color:var(--faint);}
+
+  /* ============ 2 赛程 ============ */
+  .monthbar{display:flex;align-items:center;justify-content:center;gap:18px;padding:4px 0 12px;font-size:16px;font-weight:700;}
+  .monthbar span{color:var(--blue);font-size:18px;font-weight:400;}
+  .cal{background:#fff;border-radius:16px;margin:0 18px;padding:12px 10px 6px;box-shadow:var(--shadow);}
+  .cal-head,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;}
+  .cal-head div{font-size:10px;color:var(--faint);padding:4px 0;font-weight:600;letter-spacing:.06em;}
+  .cal-grid div{height:40px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink2);position:relative;}
+  .cal-grid .off{color:#C6D0DE;}
+  .cal-grid .sel{background:var(--ink);color:#fff;border-radius:50%;width:34px;height:34px;margin:auto;font-weight:700;}
+  .cal-grid .today{color:var(--blue);font-weight:800;}
+  .cal-grid .has::after{content:"";position:absolute;bottom:4px;width:5px;height:5px;border-radius:50%;background:var(--blue);}
+  .cal-grid .has.sel::after{background:#8CB9FF;}
+
+  /* ============ 3 训练详情 ============ */
+  .cover{height:194px;background:linear-gradient(135deg,#0C2A58 0%,#174E9E 60%,#2B72D8 100%);position:relative;padding:58px 18px 14px;color:#fff;margin-top:-44px;}
+  .cover .ring{position:absolute;right:-30px;bottom:-50px;width:180px;height:180px;border-radius:50%;border:26px solid rgba(255,255,255,.07);}
+  .cover .ring2{position:absolute;right:20px;bottom:-90px;width:160px;height:160px;border-radius:50%;border:18px solid rgba(255,255,255,.05);}
+  .cover h1{font-size:22px;font-weight:800;letter-spacing:.02em;margin-top:8px;}
+  .info-card{margin:-28px 18px 0;position:relative;padding:14px 16px;}
+  .info-line{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:13px;color:var(--ink2);}
+  .info-line .k{width:18px;color:var(--blue);display:flex;}
+  .info-line .v b{font-weight:600;}
+  .stack{margin:12px 18px 0;padding:14px 16px;}
+  .avatarwall{display:flex;align-items:center;margin-top:10px;gap:6px;}
+  .avatarwall .avatar{width:30px;height:30px;font-size:11px;}
+  .avatarwall .more{margin-left:4px;font-size:12px;color:var(--muted);}
+  .bottom-bar{flex:0 0 82px;background:#fff;border-top:1px solid var(--line);padding:12px 18px;display:flex;gap:10px;align-items:center;}
+
+  /* ============ 4 接龙导入 ============ */
+  .paste{margin:0 18px;background:#fff;border-radius:16px;border:1.5px dashed #B9D2F7;padding:12px 14px;font-size:12px;
+    line-height:1.72;color:#41546F;font-family:ui-monospace,Menlo,Consolas,monospace;position:relative;overflow:hidden;height:128px;}
+  .paste .dim{color:#A9B6C9;}
+  .summary{display:flex;gap:8px;margin:12px 18px 0;}
+  .sum{flex:1;background:#fff;border-radius:12px;padding:10px 12px;border:1px solid var(--line);}
+  .sum b{font-size:18px;font-weight:800;letter-spacing:.02em;}
+  .sum span{display:block;font-size:10px;color:var(--muted);margin-top:2px;}
+  .imp-row{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;height:46px;padding:0 11px;
+    margin:0 18px 6px;border:1px solid var(--line);}
+  .imp-row.warn{border-color:#FAD9A6;background:#FFFBF3;}
+  .imp-name{font-size:13px;font-weight:600;line-height:1.3;}
+  .imp-src{font-size:10.5px;color:var(--faint);margin-top:1px;line-height:1.3;}
+  .badge-ok{width:20px;height:20px;border-radius:50%;background:#E7F7F0;color:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;}
+
+  /* ============ 5 点名台 ============ */
+  .dark-head{background:linear-gradient(160deg,#071629,#0E2C55);color:#fff;padding:0 18px 14px;margin-top:-44px;padding-top:56px;}
+  .dark-head h1{font-size:18px;font-weight:800;letter-spacing:.03em;}
+  .dark-head .sub{font-size:11.5px;color:#8FB3E0;margin-top:4px;}
+  .counts{display:flex;gap:6px;margin-top:12px;}
+  .cnt{flex:1;background:rgba(255,255,255,.08);border-radius:10px;padding:7px 0;text-align:center;}
+  .cnt b{font-size:16px;font-weight:800;display:block;}
+  .cnt span{font-size:9.5px;color:#8FB3E0;letter-spacing:.06em;}
+  .seg{display:flex;background:#E9EFF8;border-radius:10px;padding:3px;margin:12px 18px 0;}
+  .seg div{flex:1;text-align:center;font-size:12px;padding:6px 0;border-radius:8px;color:#6B7A90;font-weight:600;}
+  .seg div.on{background:#fff;color:var(--ink);box-shadow:0 2px 6px rgba(10,27,51,.10);}
+  .rc-row{display:flex;align-items:center;gap:11px;padding:9px 18px;border-bottom:1px solid #EEF2F8;}
+  .rc-name{font-size:14px;font-weight:600;}
+  .rc-meta{font-size:10.5px;color:var(--faint);margin-top:2px;}
+  .states{display:flex;gap:5px;margin-left:auto;}
+  .st{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:700;background:#F0F3F8;color:#A9B6C9;}
+  .st.p{background:#E7F7F0;color:var(--green);box-shadow:inset 0 0 0 1.5px #B6E9D4;}
+  .st.l{background:#FFF4E0;color:#B06F00;box-shadow:inset 0 0 0 1.5px #FAD9A6;}
+  .st.a{background:#FEECEC;color:var(--red);box-shadow:inset 0 0 0 1.5px #F8C9C9;}
+
+  /* ============ 6 比赛 ============ */
+  .vs-cover{background:linear-gradient(135deg,#0A1F3D 0%,#143F7C 55%,#1E62C4 100%);color:#fff;padding:58px 18px 14px;margin-top:-44px;}
+  .vs-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
+  .vs-team{text-align:center;width:96px;}
+  .vs-badge{width:54px;height:54px;border-radius:16px;margin:0 auto 7px;display:flex;align-items:center;justify-content:center;
+    font-size:19px;font-weight:800;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);}
+  .vs-team b{font-size:12px;font-weight:600;}
+  .vs-mid{text-align:center;}
+  .vs-mid b{font-size:26px;font-weight:800;letter-spacing:.06em;}
+  .vs-mid span{display:block;font-size:10.5px;color:#9CC2FF;letter-spacing:.1em;margin-top:2px;}
+  .gap-hint{background:linear-gradient(90deg,#EEF5FF,#F7FAFF);border-radius:12px;padding:10px 12px;font-size:12px;color:#1B4D8F;
+    display:flex;gap:8px;align-items:center;border:1px solid #D8E7FF;}
+
+  /* ============ 7 我的 ============ */
+  .me-head{background:linear-gradient(160deg,#0B2344,#174B93);color:#fff;padding:16px 20px 46px;margin-top:-44px;padding-top:58px;}
+  .me-name{font-size:21px;font-weight:800;}
+  .me-meta{font-size:12px;color:#A9C4EA;margin-top:6px;}
+  .num-badge{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:10px;
+    padding:7px 12px;font-size:20px;font-weight:800;letter-spacing:.02em;}
+  .stat-card{margin:-32px 18px 0;display:flex;padding:16px 0;position:relative;z-index:2;}
+  .stat{flex:1;text-align:center;position:relative;}
+  .stat+.stat::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:1px;background:var(--line);}
+  .stat b{font-size:22px;font-weight:800;letter-spacing:.01em;display:block;}
+  .stat span{font-size:10.5px;color:var(--muted);}
+  .list{margin:14px 18px 0;background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--line);}
+  .li{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid #F0F3F8;font-size:14px;}
+  .li:last-child{border-bottom:0;}
+  .li i{width:30px;height:30px;border-radius:9px;background:var(--blue-l);color:var(--blue);display:flex;align-items:center;justify-content:center;flex:0 0 30px;}
+  .li i svg{width:16px;height:16px;}
+  .li .chev{margin-left:auto;color:#C6D0DE;font-size:18px;}
+
+  /* ============ 8 伤病 ============ */
+  .inj-hero{background:linear-gradient(135deg,#3A1520 0%,#7A2033 60%,#B02A3D 100%);color:#fff;padding:16px;border-radius:16px;margin:0 18px;}
+  .inj-hero .lbl{font-size:10.5px;letter-spacing:.18em;color:#F5B8C2;font-weight:600;}
+  .inj-hero h2{font-size:20px;font-weight:800;margin-top:6px;}
+  .inj-kv{display:flex;gap:10px;margin-top:14px;}
+  .inj-kv div{flex:1;background:rgba(255,255,255,.10);border-radius:10px;padding:8px 10px;}
+  .inj-kv span{display:block;font-size:9.5px;color:#F5B8C2;}
+  .inj-kv b{font-size:12.5px;font-weight:600;}
+  .tl{position:relative;padding-left:22px;}
+  .tl::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1.5px;background:var(--line);}
+  .tl-item{position:relative;padding:0 0 16px;}
+  .tl-item::before{content:"";position:absolute;left:-21px;top:5px;width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid var(--blue);}
+  .tl-item.done::before{border-color:var(--green);}
+
+  /* ============ 9 规范 ============ */
+  .spec{background:#fff;height:100%;padding:16px 20px;overflow:hidden;}
+  .spec h3{font-size:13px;letter-spacing:.16em;color:var(--muted);font-weight:700;margin:0 0 10px;}
+  .sw{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+  .sw div{height:42px;border-radius:10px;display:flex;align-items:flex-end;padding:5px;font-size:8.5px;color:#fff;font-weight:600;}
+  .sw div.light{color:#5A6B85;}
+  .type-row{display:flex;align-items:baseline;justify-content:space-between;padding:4px 0;border-bottom:1px dashed #EDF1F7;}
+  .type-row span{font-size:10px;color:var(--faint);}
+  .comp{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+</style>
+</head>
+<body>
+
+<div class="board-head">
+  <div class="brand">STRIKERS<span>球队助手 · 视觉设计稿 v1</span></div>
+  <div class="meta">主色 蓝白 · 375 × 812<br>2026.11 · 8 个核心页面</div>
+</div>
+
+<main class="grid">
+
+<!-- ================= 1 首页 ================= -->
+<figure>
+<div class="phone"><div class="screen">
+  <div class="statusbar" style="color:#fff;"><span>9:41</span><span class="sb-r"><svg width="52" height="12" viewBox="0 0 52 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="currentColor"/><rect x="25" y="2.6" width="13" height="6.8" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="27" y="4.3" width="8" height="3.4" rx="1" fill="currentColor"/><path d="M39.6 5.2v1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span></div>
+  <div class="hero">
+    <div class="row between">
+      <div>
+        <div class="team-name">STRIKERS</div>
+        <div class="greet">周三好，阿伟</div>
+      </div>
+      <div class="row gap8">
+        <div class="icon-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 3h16l-2-3z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg></div>
+        <div class="avatar sm">伟</div>
+      </div>
+    </div>
+    <div class="greet-sub">共有 2 人今天过生日 · 本周 2 场活动</div>
+  </div>
+
+  <div class="next-card card">
+    <div class="row between">
+      <span class="tag blue">下一场 · 联赛</span>
+      <span class="tiny" style="color:#E8590C;font-weight:600;">还有 2 天</span>
+    </div>
+    <div class="match-title" style="margin-top:10px;">Strikers vs 闪电队</div>
+    <div class="match-meta">11月8日 周六 14:00 · 城南体育公园</div>
+    <div class="row between" style="margin-top:14px;">
+      <div class="tiny muted">已报名 <b style="color:var(--ink);font-size:12.5px;">18</b> / 22 人</div>
+      <div class="tiny" style="color:var(--blue);font-weight:600;">去报名 ›</div>
+    </div>
+    <div class="progress"><i style="width:82%"></i></div>
+  </div>
+
+  <div class="alert">
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#C2570A" stroke-width="2" stroke-linejoin="round"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.2"/></svg>
+    <div style="flex:1"><b>你当前处于伤停中</b> · 右膝 · 预计 11-20 复出</div>
+    <span style="color:#C9A26B;">›</span>
+  </div>
+
+  <div class="quick">
+    <div class="q"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></i>报名</div>
+    <div class="q"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></i>发训练</div>
+    <div class="q"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg></i>发约练</div>
+    <div class="q"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></i>点名</div>
+  </div>
+
+  <div class="sec-title"><b>今日生日</b><span class="tiny muted">查看全部 ›</span></div>
+  <div class="bday card">
+    <div style="width:38px;height:38px;border-radius:12px;background:#FFF3E4;display:flex;align-items:center;justify-content:center;flex:0 0 38px;">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#E0810C" stroke-width="1.8" stroke-linecap="round"><path d="M12 3.2v3.6"/><path d="M4 21v-6.5A2.5 2.5 0 0 1 6.5 12h11a2.5 2.5 0 0 1 2.5 2.5V21"/><path d="M4 17c1.6 0 1.6 1.4 3.2 1.4S8.8 17 10.4 17s1.6 1.4 3.2 1.4S15.2 17 16.8 17s1.6 1.4 3.2 1.4"/><path d="M3 21h18"/></svg>
+    </div>
+    <div style="flex:1">
+      <div style="font-size:13.5px;font-weight:700;">今天是王建国的生日</div>
+      <div class="tiny muted" style="margin-top:3px;">一起去祝他生日快乐吧</div>
+    </div>
+    <div class="btn-sm btn-ghost" style="height:30px;font-size:12px;">送祝福</div>
+  </div>
+
+  <div class="sec-title"><div class="row gap8"><b>球队公告</b><span class="tag gray" style="height:18px;font-size:10px;">2</span></div><span class="tiny muted">全部 ›</span></div>
+  <div class="notice"><div class="bar"></div><div class="txt"><b>本周六比赛集合时间改为 12:30</b><span>队长 · 2 小时前</span></div></div>
+  <div class="notice"><div class="bar" style="background:#C6D0DE;"></div><div class="txt"><b>冬季队服统计尺寸</b><span>管理员 · 昨天</span></div></div>
+
+  <div class="tabbar" style="margin-top:auto">
+    <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>首页</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>赛程</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M6 7l12 10M18 7L6 17"/></svg>训练</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>我的</div>
+  </div>
+</div></div>
+<figcaption>01 · 首页：下一场 + 生日 + 伤停提醒</figcaption>
+</figure>
+
+<!-- ================= 2 赛程 ================= -->
+<figure>
+<div class="phone"><div class="screen">
+  <div class="statusbar"><span>9:41</span><span class="sb-r"><svg width="52" height="12" viewBox="0 0 52 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="currentColor"/><rect x="25" y="2.6" width="13" height="6.8" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="27" y="4.3" width="8" height="3.4" rx="1" fill="currentColor"/><path d="M39.6 5.2v1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span></div>
+  <div class="navbar"><div class="nav-side">‹</div><div>赛程</div><div class="nav-side r">＋</div></div>
+
+  <div class="monthbar"><span>‹</span> 2026 年 11 月 <span style="color:#C6D0DE;">›</span></div>
+
+  <div class="cal">
+    <div class="cal-head"><div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div></div>
+    <div class="cal-grid">
+      <div class="off">26</div><div class="off">27</div><div class="off">28</div><div class="off">29</div><div class="off">30</div><div class="off">31</div><div>1</div>
+      <div>2</div><div>3</div><div>4</div><div class="has">5</div><div>6</div><div>7</div><div class="has sel">8</div>
+      <div class="today">9</div><div class="has">10</div><div>11</div><div class="has">12</div><div>13</div><div>14</div><div class="has">15</div>
+      <div>16</div><div>17</div><div class="has">18</div><div>19</div><div>20</div><div class="has">21</div><div class="has">22</div>
+      <div>23</div><div>24</div><div>25</div><div class="has">26</div><div>27</div><div>28</div><div class="has">29</div>
+      <div class="off">30</div><div class="off">1</div><div class="off">2</div><div class="off">3</div><div class="off">4</div><div class="off">5</div><div class="off">6</div>
+    </div>
+  </div>
+
+  <div class="sec-title" style="padding:16px 18px 6px;"><b>11 月 8 日 周六</b><span class="tag blue">联赛</span></div>
+
+  <div style="margin:0 18px;" class="card">
+    <div style="display:flex;gap:12px;padding:14px;">
+      <div style="width:46px;flex:0 0 46px;text-align:center;border-right:1px solid var(--line);padding-right:10px;">
+        <div style="font-size:18px;font-weight:800;line-height:1;">8</div>
+        <div class="tiny muted" style="margin-top:4px;">周六</div>
+      </div>
+      <div style="flex:1">
+        <div class="row between">
+          <div style="font-size:15px;font-weight:800;">vs 闪电队</div>
+          <span class="tag green">已报名</span>
+        </div>
+        <div class="match-meta" style="margin-top:5px;">14:00 · 城南体育公园 · 主</div>
+        <div class="row between" style="margin-top:8px;">
+          <span class="tiny" style="color:var(--blue);font-weight:600;">报名 18/22</span>
+          <span class="tiny muted">查看详情 ›</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin:12px 18px 0;" class="card">
+    <div style="display:flex;gap:12px;padding:14px;">
+      <div style="width:46px;flex:0 0 46px;text-align:center;border-right:1px solid var(--line);padding-right:10px;">
+        <div style="font-size:18px;font-weight:800;line-height:1;color:#C6D0DE;">1</div>
+        <div class="tiny muted" style="margin-top:4px;">周日</div>
+      </div>
+      <div style="flex:1">
+        <div class="row between">
+          <div style="font-size:15px;font-weight:800;color:#95A3B8;">vs 猎鹰队</div>
+          <span class="tag gray">已结束</span>
+        </div>
+        <div class="match-meta" style="margin-top:5px;">21:0 · 城北足球公园 · 客</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin:14px 18px 0;font-size:11px;color:var(--faint);text-align:center;">本月还有 6 场比赛 · 蓝点为比赛日</div>
+
+  <div class="tabbar" style="margin-top:auto">
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>首页</div>
+    <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>赛程</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M6 7l12 10M18 7L6 17"/></svg>训练</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>我的</div>
+  </div>
+</div></div>
+<figcaption>02 · 赛程：月历打点 + 比赛卡片</figcaption>
+</figure>
+
+<!-- ================= 3 训练详情 ================= -->
+<figure>
+<div class="phone"><div class="screen">
+  <div class="statusbar" style="color:#fff;"><span>9:41</span><span class="sb-r"><svg width="52" height="12" viewBox="0 0 52 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="currentColor"/><rect x="25" y="2.6" width="13" height="6.8" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="27" y="4.3" width="8" height="3.4" rx="1" fill="currentColor"/><path d="M39.6 5.2v1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span></div>
+  <div class="cover">
+    <div class="ring"></div><div class="ring2"></div>
+    <div class="row between" style="position:relative;">
+      <div style="font-size:20px;">‹</div>
+      <span class="tag" style="background:rgba(255,255,255,.16);color:#fff;">对抗训练</span>
+    </div>
+    <h1>周六常规训练</h1>
+    <div style="font-size:12px;color:#B7D0F2;margin-top:6px;">11月8日 周六 19:00 - 21:00</div>
+  </div>
+
+  <div class="info-card card">
+    <div class="info-line"><span class="k"><svg viewBox="0 0 24 24" width="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="v">19:00 - 21:00 · 共 2 小时</span></div>
+    <div class="divider"></div>
+    <div class="info-line"><span class="k"><svg viewBox="0 0 24 24" width="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span><span class="v"><b>城南体育公园 3 号场</b> <span style="color:var(--blue);font-size:12px;">导航 ›</span></span></div>
+    <div class="divider"></div>
+    <div class="info-line"><span class="k"><svg viewBox="0 0 24 24" width="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.4"/><path d="M16 15c2.7.3 4.5 2 4.5 4.5"/></svg></span><span class="v">已报名 <b>24</b> / 30 人</span></div>
+    <div class="divider"></div>
+    <div class="info-line"><span class="k"><svg viewBox="0 0 24 24" width="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16v11H4z"/><path d="M8 7V4h8v3"/></svg></span><span class="v">头盔、护肩、防滑钉鞋</span></div>
+  </div>
+
+  <div class="stack card">
+    <div class="row between"><b style="font-size:13px;">报名名单</b><span class="tiny" style="color:var(--blue);font-weight:600;">24 人 ›</span></div>
+    <div class="avatarwall">
+      <div class="avatar">伟</div><div class="avatar g2">强</div><div class="avatar g3">磊</div><div class="avatar g4">王</div><div class="avatar g2">陈</div><div class="avatar g3">赵</div><div class="avatar g4">刘</div>
+      <span class="more">+17</span>
+    </div>
+    <div style="margin-top:12px;padding:9px 11px;background:#FFF7ED;border-radius:10px;font-size:11.5px;color:#9A4A05;" class="row gap8">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#C2570A" stroke-width="2" stroke-linejoin="round" style="flex:0 0 14px;"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.2"/></svg><span>本场有 <b>3</b> 人处于伤停中，名单已标记</span>
+    </div>
+  </div>
+
+  <div class="stack card" style="padding:12px 14px;">
+    <div class="row between"><div class="row gap8"><b style="font-size:13px;">接龙名单</b><span class="tag amber" style="height:18px;font-size:10px;">已导入 18 人</span></div><span class="tiny" style="color:var(--blue);font-weight:600;">重新导入 ›</span></div>
+  </div>
+
+  <div class="stack card" style="padding:14px 16px;">
+    <div class="row between"><b style="font-size:13px;">训练安排</b><span class="tiny muted">教练组</span></div>
+    <div class="row between" style="margin-top:11px;font-size:12.5px;color:var(--ink2);">
+      <span class="row gap8"><span style="width:6px;height:6px;border-radius:50%;background:#C6D0DE;"></span>热身与拉伸</span><span class="muted">19:00 - 19:15</span>
+    </div>
+    <div class="row between" style="margin-top:9px;font-size:12.5px;color:var(--ink2);">
+      <span class="row gap8"><span style="width:6px;height:6px;border-radius:50%;background:var(--blue);"></span>战术演练（进攻组）</span><span class="muted">19:15 - 19:50</span>
+    </div>
+    <div class="row between" style="margin-top:9px;font-size:12.5px;color:var(--ink2);">
+      <span class="row gap8"><span style="width:6px;height:6px;border-radius:50%;background:var(--orange);"></span>全场对抗</span><span class="muted">19:50 - 21:00</span>
+    </div>
+  </div>
+
+  <div class="bottom-bar" style="margin-top:auto;">
+    <div class="btn btn-ghost" style="flex:0 0 104px;height:46px;font-size:14px;">点名台</div>
+    <div class="btn btn-primary" style="flex:1;">我要参加</div>
+  </div>
+</div></div>
+<figcaption>03 · 训练详情：信息 + 名单 + 接龙入口</figcaption>
+</figure>
+
+<!-- ================= 4 接龙导入 ================= -->
+<figure>
+<div class="phone"><div class="screen">
+  <div class="statusbar"><span>9:41</span><span class="sb-r"><svg width="52" height="12" viewBox="0 0 52 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="currentColor"/><rect x="25" y="2.6" width="13" height="6.8" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="27" y="4.3" width="8" height="3.4" rx="1" fill="currentColor"/><path d="M39.6 5.2v1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span></div>
+  <div class="navbar"><div class="nav-side">‹</div><div>导入接龙</div><div class="nav-side r" style="font-size:13px;color:var(--blue);">帮助</div></div>
+
+  <div class="pad" style="padding-top:6px;">
+    <div class="tiny row between" style="margin-bottom:8px;"><span class="muted">把微信群里的接龙文本整个粘进来</span><span style="color:var(--blue);font-weight:600;">已粘贴 7 行 · 可编辑</span></div>
+    <div class="paste">
+      <div class="dim">周六训练接龙</div>
+      1. 张伟<br>
+      2. 李强 带朋友<br>
+      3. 王磊 迟到20分钟<br>
+      4. 陈晨 请假<br>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="sum"><b style="color:var(--green);">18</b><span>已识别</span></div>
+    <div class="sum"><b style="color:#B06F00;">3</b><span>待确认</span></div>
+    <div class="sum"><b>1</b><span>请假</span></div>
+  </div>
+
+  <div style="padding:14px 18px 6px;font-size:11px;letter-spacing:.1em;color:var(--muted);font-weight:700;">解析结果</div>
+
+  <div class="imp-row"><div class="avatar sm">伟</div><div style="flex:1"><div class="imp-name">张伟</div><div class="imp-src">精确匹配 · 花名册</div></div><span class="tag green" style="height:20px;">参加</span></div>
+  <div class="imp-row"><div class="avatar sm g2">强</div><div style="flex:1"><div class="imp-name">李强 <span style="font-size:10px;color:var(--faint);">+1 随行</span></div><div class="imp-src">精确匹配 · 花名册</div></div><span class="tag green" style="height:20px;">参加</span></div>
+  <div class="imp-row"><div class="avatar sm g3">磊</div><div style="flex:1"><div class="imp-name">王磊 <span style="font-size:10px;color:#B06F00;">迟到</span></div><div class="imp-src">精确匹配 · 花名册</div></div><span class="tag amber" style="height:20px;">迟到</span></div>
+  <div class="imp-row"><div class="avatar sm g4">陈</div><div style="flex:1"><div class="imp-name">陈晨</div><div class="imp-src">精确匹配 · 花名册</div></div><span class="tag gray" style="height:20px;">请假</span></div>
+
+  <div class="imp-row warn"><div class="avatar sm" style="background:#F5A524;">?</div><div style="flex:1"><div class="imp-name">老王</div><div class="imp-src">可能是昵称 · 王建国？</div></div><div class="btn-sm" style="background:#fff;border:1px solid #FAD9A6;color:#9A4A05;height:26px;font-size:11px;">指定</div></div>
+  <div class="imp-row warn"><div class="avatar sm" style="background:#F5A524;">?</div><div style="flex:1"><div class="imp-name">赵磊</div><div class="imp-src">花名册中未找到 · 可能是外援</div></div><div class="btn-sm" style="background:#fff;border:1px solid #FAD9A6;color:#9A4A05;height:26px;font-size:11px;">指定</div></div>
+  <div class="imp-row warn"><div class="avatar sm" style="background:#F5A524;">?</div><div style="flex:1"><div class="imp-name">7 号</div><div class="imp-src">按球衣号匹配 · 陈晨 7 号？</div></div><div class="btn-sm" style="background:#fff;border:1px solid #FAD9A6;color:#9A4A05;height:26px;font-size:11px;">指定</div></div>
+
+  <div class="bottom-bar" style="margin-top:auto;">
+    <div class="btn btn-ghost" style="flex:0 0 96px;height:46px;font-size:14px;">手动录入</div>
+    <div class="btn btn-primary" style="flex:1;">确认导入（21）</div>
+  </div>
+</div></div>
+<figcaption>04 · 接龙导入：粘贴 → 解析 → 待确认</figcaption>
+</figure>
+
+<!-- ================= 5 点名台 ================= -->
+<figure>
+<div class="phone"><div class="screen" style="background:#F4F7FC;">
+  <div class="statusbar" style="color:#fff;"><span>9:41</span><span class="sb-r"><svg width="52" height="12" viewBox="0 0 52 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="currentColor"/><rect x="25" y="2.6" width="13" height="6.8" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="27" y="4.3" width="8" height="3.4" rx="1" fill="currentColor"/><path d="M39.6 5.2v1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span></div>
+  <div class="dark-head">
+    <div class="row between">
+      <div>
+        <h1>点名 · 周六常规训练</h1>
+        <div class="sub">11月8日 19:00 · 发起人：队长</div>
+      </div>
+      <div style="text-align:right;font-size:10px;color:#8FB3E0;">进行中<br><span style="font-size:14px;color:#fff;font-weight:700;">02:14</span></div>
+    </div>
+    <div class="counts">
+      <div class="cnt"><b>24</b><span>应到</span></div>
+      <div class="cnt" style="background:rgba(15,169,104,.18);"><b style="color:#4ADE9B;">15</b><span>已到</span></div>
+      <div class="cnt" style="background:rgba(245,165,36,.16);"><b style="color:#FFC95C;">1</b><span>迟到</span></div>
+      <div class="cnt"><b>2</b><span>请假</span></div>
+      <div class="cnt" style="background:rgba(229,72,77,.16);"><b style="color:#FF8A8E;">6</b><span>未处理</span></div>
+    </div>
+  </div>
+
+  <div class="seg"><div class="on">全部 24</div><div>进攻 11</div><div>防守 10</div><div>特勤 3</div></div>
+
+  <div style="margin-top:10px;">
+    <div class="rc-row">
+      <div class="avatar sm g2">伟</div>
+      <div><div class="rc-name">张伟</div><div class="rc-meta">WR 外接手 · 11 号</div></div>
+      <div class="states"><div class="st p">到</div><div class="st">迟</div><div class="st">缺</div></div>
+    </div>
+    <div class="rc-row">
+      <div class="avatar sm g3">强</div>
+      <div><div class="rc-name">李强</div><div class="rc-meta">QB 四分卫 · 7 号</div></div>
+      <div class="states"><div class="st p">到</div><div class="st">迟</div><div class="st">缺</div></div>
+    </div>
+    <div class="rc-row">
+      <div class="avatar sm g4">磊</div>
+      <div><div class="rc-name">王磊</div><div class="rc-meta">LB 线卫 · 52 号</div></div>
+      <div class="states"><div class="st">到</div><div class="st l">迟</div><div class="st">缺</div></div>
+    </div>
+    <div class="rc-row">
+      <div class="avatar sm">陈</div>
+      <div><div class="rc-name">陈晨 <span class="tag red" style="height:16px;font-size:9px;padding:0 5px;">伤停</span></div><div class="rc-meta">RB 跑卫 · 22 号</div></div>
+      <div class="states"><div class="st">到</div><div class="st">迟</div><div class="st a">缺</div></div>
+    </div>
+    <div class="rc-row">
+      <div class="avatar sm g2">王</div>
+      <div><div class="rc-name">王建国</div><div class="rc-meta">OL 进攻锋线 · 66 号</div></div>
+      <div class="states"><div class="st">到</div><div class="st">迟</div><div class="st">缺</div></div>
+    </div>
+    <div class="rc-row">
+      <div class="avatar sm g3">赵</div>
+      <div><div class="rc-name">赵磊 <span class="tag gray" style="height:16px;font-size:9px;padding:0 5px;">请假</span></div><div class="rc-meta">DL 防守锋线 · 90 号</div></div>
+      <div class="states"><div class="st">到</div><div class="st">迟</div><div class="st">缺</div></div>
+    </div>
+    <div class="rc-row">
+      <div class="avatar sm g4">刘</div>
+      <div><div class="rc-name">刘洋</div><div class="rc-meta">CB 角卫 · 24 号</div></div>
+      <div class="states"><div class="st">到</div><div class="st">迟</div><div class="st">缺</div></div>
+    </div>
+    <div class="rc-row">
+      <div class="avatar sm g3">孙</div>
+      <div><div class="rc-name">孙浩</div><div class="rc-meta">TE 近端锋 · 88 号</div></div>
+      <div class="states"><div class="st p">到</div><div class="st">迟</div><div class="st">缺</div></div>
+    </div>
+    <div class="rc-row">
+      <div class="avatar sm g2">周</div>
+      <div><div class="rc-name">周杰</div><div class="rc-meta">S 安全卫 · 3 号</div></div>
+      <div class="states"><div class="st">到</div><div class="st">迟</div><div class="st">缺</div></div>
+    </div>
+  </div>
+
+  <div class="bottom-bar" style="margin-top:auto;gap:10px;">
+    <div class="btn btn-ghost" style="flex:0 0 110px;height:46px;font-size:14px;">全部出勤</div>
+    <div class="btn btn-primary" style="flex:1;">提交点名（15/24）</div>
+  </div>
+</div></div>
+<figcaption>05 · 点名台：核心页面，50 人 30 秒</figcaption>
+</figure>
+
+<!-- ================= 6 比赛报名 ================= -->
+<figure>
+<div class="phone"><div class="screen">
+  <div class="statusbar" style="color:#fff;"><span>9:41</span><span class="sb-r"><svg width="52" height="12" viewBox="0 0 52 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="currentColor"/><rect x="25" y="2.6" width="13" height="6.8" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="27" y="4.3" width="8" height="3.4" rx="1" fill="currentColor"/><path d="M39.6 5.2v1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span></div>
+  <div class="vs-cover">
+    <div class="row between" style="font-size:20px;"><span>‹</span><span class="tag" style="background:rgba(255,255,255,.16);color:#fff;">联赛 · 第 6 轮</span></div>
+    <div class="vs-row" style="margin-top:18px;">
+      <div class="vs-team"><div class="vs-badge">S</div><b>Strikers</b></div>
+      <div class="vs-mid"><b>VS</b><span>11月8日 14:00</span></div>
+      <div class="vs-team"><div class="vs-badge" style="background:rgba(255,255,255,.08);">闪</div><b>闪电队</b></div>
+    </div>
+    <div style="text-align:center;font-size:11.5px;color:#A9C4EA;margin-top:14px;">城南体育公园 · 主队 · 集合 12:30</div>
+  </div>
+
+  <div style="margin:14px 18px 0;" class="card">
+    <div style="padding:14px 16px;">
+      <div class="row between"><b style="font-size:13px;">报名进度</b><span class="tiny" style="color:var(--blue);font-weight:600;">18 / 22</span></div>
+      <div class="progress"><i style="width:82%"></i></div>
+      <div class="row between" style="margin-top:9px;font-size:11px;color:var(--muted);">
+        <span>还有 4 个名额</span><span>候补 3 人</span>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div style="padding:12px 16px;">
+      <div class="gap-hint"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#C2570A" stroke-width="2" stroke-linejoin="round" style="flex:0 0 14px;"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.2"/></svg><span>还缺 1 名 OL 进攻锋线、1 名 LB 线卫</span></div>
+      <div style="margin-top:9px;font-size:11.5px;color:#C42929;display:flex;gap:6px;align-items:center;">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#C42929" stroke-width="2" stroke-linejoin="round" style="flex:0 0 13px;"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.2"/></svg>
+        <span>伤停 4 人不可报名：陈晨、赵磊…</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack card">
+    <div class="row between"><b style="font-size:13px;">已报名名单</b><span class="tiny muted">按位置分组</span></div>
+    <div class="avatarwall">
+      <div class="avatar">伟</div><div class="avatar g2">强</div><div class="avatar g3">磊</div><div class="avatar g4">王</div><div class="avatar g2">刘</div><div class="avatar g3">孙</div><div class="avatar g4">周</div>
+      <span class="more">+11</span>
+    </div>
+  </div>
+
+  <div class="stack card" style="padding:12px 16px;">
+    <div class="row between" style="font-size:12.5px;color:var(--ink2);"><span>截止时间</span><b>11月7日 20:00</b></div>
+    <div class="row between" style="font-size:12.5px;color:var(--ink2);margin-top:8px;"><span>我的状态</span><span class="tag green" style="height:20px;">已报名</span></div>
+  </div>
+
+  <div class="stack card" style="padding:14px 16px;">
+    <b style="font-size:13px;">赛前须知</b>
+    <div style="margin-top:9px;font-size:12px;color:var(--ink2);display:flex;gap:7px;"><span style="color:var(--blue);font-weight:700;">1</span><span>12:30 到场集合，迟到者顺延替补</span></div>
+    <div style="margin-top:7px;font-size:12px;color:var(--ink2);display:flex;gap:7px;"><span style="color:var(--blue);font-weight:700;">2</span><span>带齐头盔、护肩与白色客场球衣</span></div>
+    <div style="margin-top:7px;font-size:12px;color:var(--ink2);display:flex;gap:7px;"><span style="color:var(--blue);font-weight:700;">3</span><span>请假须在截止前提交，逾期记为缺席</span></div>
+  </div>
+
+  <div class="bottom-bar" style="margin-top:auto;">
+    <div class="btn btn-ghost" style="flex:0 0 96px;height:46px;font-size:14px;">请假</div>
+    <div class="btn btn-primary" style="flex:1;">已报名 · 取消报名</div>
+  </div>
+</div></div>
+<figcaption>06 · 比赛详情 + 赛前报名</figcaption>
+</figure>
+
+<!-- ================= 7 我的 ================= -->
+<figure>
+<div class="phone"><div class="screen">
+  <div class="statusbar" style="color:#fff;"><span>9:41</span><span class="sb-r"><svg width="52" height="12" viewBox="0 0 52 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="currentColor"/><rect x="25" y="2.6" width="13" height="6.8" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="27" y="4.3" width="8" height="3.4" rx="1" fill="currentColor"/><path d="M39.6 5.2v1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span></div>
+  <div class="me-head">
+    <div class="row between">
+      <div class="row gap12">
+        <div class="avatar lg">伟</div>
+        <div>
+          <div class="me-name">张伟</div>
+          <div class="me-meta">WR 外接手 · 11 号 · 2024 年入队</div>
+        </div>
+      </div>
+      <div class="num-badge">11</div>
+    </div>
+  </div>
+
+  <div class="stat-card card">
+    <div class="stat"><b>18</b><span>出勤次数</span></div>
+    <div class="stat"><b style="color:var(--green);">82%</b><span>出勤率</span></div>
+    <div class="stat"><b style="color:var(--amber);">2</b><span>迟到</span></div>
+  </div>
+
+  <div class="list">
+    <div class="li"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></i><span>我的伤病记录</span><span class="tag red" style="height:18px;font-size:10px;">伤停中</span><span class="chev">›</span></div>
+    <div class="li"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="5" y="4.5" width="14" height="16" rx="2"/><path d="M9 3h6v3H9z"/><path d="M8.5 11h7M8.5 15h4.5"/></svg></i><span>我的报名</span><span class="chev">›</span></div>
+    <div class="li"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 19v-6M10 19V7M15 19v-4M20 19v-9"/></svg></i><span>出勤明细与统计口径</span><span class="chev">›</span></div>
+  </div>
+
+  <div class="card" style="margin:14px 18px 0;padding:14px 16px;">
+    <div class="row between"><b style="font-size:13px;">近 6 周出勤</b><span class="tiny muted">本周 2 / 2</span></div>
+    <div style="display:flex;align-items:flex-end;gap:9px;height:56px;margin-top:12px;">
+      <div style="flex:1;height:36px;background:#C9DCFA;border-radius:6px;"></div>
+      <div style="flex:1;height:48px;background:#9CC2FF;border-radius:6px;"></div>
+      <div style="flex:1;height:24px;background:#E9F0FE;border-radius:6px;"></div>
+      <div style="flex:1;height:52px;background:linear-gradient(180deg,#2C7BF5,#1557D6);border-radius:6px;"></div>
+      <div style="flex:1;height:40px;background:#C9DCFA;border-radius:6px;"></div>
+      <div style="flex:1;height:30px;background:#E9F0FE;border-radius:6px;"></div>
+    </div>
+    <div class="row between" style="margin-top:8px;font-size:9.5px;color:var(--faint);">
+      <span>9/28</span><span>10/5</span><span>10/12</span><span>10/19</span><span>10/26</span><span>11/2</span>
+    </div>
+  </div>
+
+  <div class="list">
+    <div class="li"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 3h16l-2-3z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg></i><span>消息中心</span><span class="tag blue" style="height:18px;font-size:10px;">3</span><span class="chev">›</span></div>
+    <div class="li"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h9M17.5 7H20M4 17h4M12.5 17H20"/><circle cx="15" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></i><span>提醒设置</span><span class="chev">›</span></div>
+    <div class="li"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M12 3.5l7 2.8v5.6c0 4.2-3 7.6-7 8.9-4-1.3-7-4.7-7-8.9V6.3z"/></svg></i><span>管理入口</span><span class="tag gray" style="height:18px;font-size:10px;">队长</span><span class="chev">›</span></div>
+  </div>
+
+  <div class="tabbar" style="margin-top:auto">
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>首页</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>赛程</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M6 7l12 10M18 7L6 17"/></svg>训练</div>
+    <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>我的</div>
+  </div>
+</div></div>
+<figcaption>07 · 我的：个人统计 + 伤病入口</figcaption>
+</figure>
+
+<!-- ================= 8 伤病档案 ================= -->
+<figure>
+<div class="phone"><div class="screen">
+  <div class="statusbar"><span>9:41</span><span class="sb-r"><svg width="52" height="12" viewBox="0 0 52 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="currentColor"/><rect x="25" y="2.6" width="13" height="6.8" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="27" y="4.3" width="8" height="3.4" rx="1" fill="currentColor"/><path d="M39.6 5.2v1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span></div>
+  <div class="navbar"><div class="nav-side">‹</div><div>伤病记录</div><div class="nav-side r">＋</div></div>
+
+  <div style="padding-top:4px;">
+    <div class="inj-hero">
+      <div class="lbl">当前状态</div>
+      <h2>伤停中 · 右侧膝盖</h2>
+      <div style="font-size:11.5px;color:#F5B8C2;margin-top:5px;">内侧副韧带扭伤 · 中度 · 11月2日受伤</div>
+      <div class="inj-kv">
+        <div><span>预计复出</span><b>11月20日</b></div>
+        <div><span>已伤停</span><b>4 天</b></div>
+        <div><span>影响</span><b>训练 / 比赛</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pad" style="padding-top:16px;">
+    <div class="row between" style="margin-bottom:10px;"><b style="font-size:13px;">康复进展</b><span class="tiny muted">仅本人与队长可见</span></div>
+    <div class="tl">
+      <div class="tl-item"><div style="font-size:12.5px;font-weight:600;">复查结果良好，可开始轻度慢跑</div><div class="tiny muted" style="margin-top:3px;">11月5日 · 本人更新</div></div>
+      <div class="tl-item"><div style="font-size:12.5px;font-weight:600;">队长确认：本周不上场</div><div class="tiny muted" style="margin-top:3px;">11月3日 · 队长更新</div></div>
+      <div class="tl-item done"><div style="font-size:12.5px;font-weight:600;">新建伤病记录：右膝内侧副韧带扭伤</div><div class="tiny muted" style="margin-top:3px;">11月2日 · 本人创建</div></div>
+    </div>
+  </div>
+
+  <div class="pad" style="padding-top:2px;">
+    <div class="row between" style="margin-bottom:8px;"><b style="font-size:13px;">历史记录</b><span class="tiny muted">共 3 次</span></div>
+    <div class="card" style="padding:12px 14px;margin-bottom:8px;">
+      <div class="row between"><b style="font-size:13px;">左脚踝扭伤</b><span class="tag green" style="height:18px;font-size:10px;">已康复</span></div>
+      <div class="tiny muted" style="margin-top:4px;">2026-08-12 → 2026-08-26 · 共 14 天</div>
+    </div>
+    <div class="card" style="padding:12px 14px;">
+      <div class="row between"><b style="font-size:13px;">肩部挫伤</b><span class="tag green" style="height:18px;font-size:10px;">已康复</span></div>
+      <div class="tiny muted" style="margin-top:4px;">2026-05-03 → 2026-05-10 · 共 7 天</div>
+    </div>
+  </div>
+
+  <div class="pad" style="margin-top:auto;padding-bottom:16px;">
+    <div class="btn btn-primary">标记为已康复</div>
+    <div class="tiny" style="text-align:center;color:var(--faint);margin-top:9px;">仅作队内记录，非医疗诊断</div>
+  </div>
+</div></div>
+<figcaption>08 · 伤病档案：状态 + 时间轴 + 历史</figcaption>
+</figure>
+
+<!-- ================= 9 规范 ================= -->
+<figure>
+<div class="phone"><div class="screen">
+<div class="spec">
+  <div style="font-size:11px;letter-spacing:.24em;color:var(--blue);font-weight:700;">DESIGN SYSTEM</div>
+  <div style="font-size:22px;font-weight:800;margin-top:6px;">蓝白视觉规范</div>
+
+  <h3 style="margin-top:22px;">主色板</h3>
+  <div class="sw">
+    <div style="background:#0A1B33;">#0A1B33</div>
+    <div style="background:#1F6FEB;">#1F6FEB</div>
+    <div style="background:#E9F0FE;" class="light">#E9F0FE</div>
+    <div style="background:#F4F7FC;border:1px solid #E4EAF3;" class="light">#F4F7FC</div>
+    <div style="background:#FFFFFF;border:1px solid #E4EAF3;" class="light">#FFFFFF</div>
+  </div>
+
+  <h3 style="margin-top:20px;">状态色</h3>
+  <div class="sw" style="grid-template-columns:repeat(4,1fr);">
+    <div style="background:#0FA968;">出勤</div>
+    <div style="background:#F5A524;">迟到</div>
+    <div style="background:#E5484D;">缺席</div>
+    <div style="background:#E8590C;">伤停</div>
+  </div>
+
+  <h3 style="margin-top:20px;">字阶</h3>
+  <div class="type-row"><b style="font-size:22px;font-weight:800;">大标题 22</b><span>页面主标题</span></div>
+  <div class="type-row"><b style="font-size:17px;font-weight:700;">卡片标题 17</b><span>比赛/训练名</span></div>
+  <div class="type-row"><b style="font-size:14px;font-weight:400;">正文 14</b><span>列表主信息</span></div>
+  <div class="type-row"><b style="font-size:12px;font-weight:400;color:#7B8AA3;">辅助 12</b><span>时间/地点</span></div>
+
+  <h3 style="margin-top:18px;">组件</h3>
+  <div style="display:flex;flex-direction:column;gap:9px;">
+    <div class="btn btn-primary" style="height:44px;">主按钮 · 我要参加</div>
+    <div class="row gap8">
+      <div class="btn btn-ghost" style="height:38px;flex:1;font-size:13px;">次按钮</div>
+      <div class="btn btn-dark" style="height:38px;flex:1;font-size:13px;">深色按钮</div>
+    </div>
+    <div class="comp">
+      <span class="tag blue">报名中</span><span class="tag green">已报名</span><span class="tag amber">迟到</span><span class="tag red">伤停</span><span class="tag gray">已结束</span>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;background:#F4F7FC;border-radius:12px;padding:10px 12px;font-size:10.5px;color:#6B7A90;line-height:1.7;">
+    圆角 16（卡片）/ 13（按钮）· 间距基数 4 · 主色仅用于可操作元素与强调，避免大面积铺满
+  </div>
+
+  <div style="margin-top:14px;background:#F4F7FC;border-radius:12px;padding:12px 14px;">
+    <div style="font-size:10px;letter-spacing:.16em;color:var(--muted);font-weight:700;">信息架构 · 4 个 Tab</div>
+    <div style="display:flex;gap:7px;margin-top:10px;">
+      <div style="flex:1;background:#fff;border-radius:9px;padding:8px 4px;text-align:center;">
+        <div style="font-size:11.5px;font-weight:700;">首页</div>
+        <div style="font-size:8.5px;color:var(--faint);margin-top:3px;">待办 / 生日</div>
+      </div>
+      <div style="flex:1;background:#fff;border-radius:9px;padding:8px 4px;text-align:center;">
+        <div style="font-size:11.5px;font-weight:700;">赛程</div>
+        <div style="font-size:8.5px;color:var(--faint);margin-top:3px;">比赛 / 报名</div>
+      </div>
+      <div style="flex:1;background:#fff;border-radius:9px;padding:8px 4px;text-align:center;">
+        <div style="font-size:11.5px;font-weight:700;">训练</div>
+        <div style="font-size:8.5px;color:var(--faint);margin-top:3px;">发布 / 点名</div>
+      </div>
+      <div style="flex:1;background:#fff;border-radius:9px;padding:8px 4px;text-align:center;">
+        <div style="font-size:11.5px;font-weight:700;">我的</div>
+        <div style="font-size:8.5px;color:var(--faint);margin-top:3px;">档案 / 伤病</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div></div>
+<figcaption>09 · 设计规范：色板 / 字阶 / 组件</figcaption>
+</figure>
+
+</main>
+</body>
+</html>

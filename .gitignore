@@ -1,0 +1,19 @@
+# 依赖 / 构建产物
+node_modules/
+miniprogram_npm/
+dist/
+
+# 分享包（随时可重新生成，不进仓库）
+*.zip
+
+# 本地截图与临时文件
+prototype/out/raw_*.png
+prototype/_share/
+_scratch/
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.local
