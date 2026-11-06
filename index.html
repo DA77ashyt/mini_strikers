@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0A1B33">
+<title>Strikers 球队小程序 · 项目首页</title>
+<style>
+  :root{
+    --ink:#0A1B33; --blue:#1F6FEB; --blue-l:#E9F0FE; --bg:#F4F7FC;
+    --muted:#6B7C93; --line:#E4EBF5; --white:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); -webkit-font-smoothing:antialiased;
+  }
+  .hero{
+    background:linear-gradient(160deg,#0A1B33 0%,#123A73 55%,#1F6FEB 130%);
+    color:#fff; padding:64px 24px 96px; position:relative; overflow:hidden;
+  }
+  .hero::after{
+    content:""; position:absolute; right:-120px; top:-80px; width:420px; height:420px;
+    border-radius:50%; border:70px solid rgba(255,255,255,.05);
+  }
+  .wrap{max-width:860px;margin:0 auto;position:relative;z-index:1}
+  .brand{font-size:12px;letter-spacing:.34em;color:#8FB6F0;font-weight:700;margin-bottom:14px}
+  h1{font-size:34px;line-height:1.25;letter-spacing:-.5px}
+  .sub{margin-top:14px;color:#B9CEEA;font-size:15px;max-width:560px}
+  .meta{margin-top:26px;display:flex;gap:8px;flex-wrap:wrap}
+  .pill{
+    font-size:12px;padding:5px 12px;border-radius:999px;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:#D6E4F7;
+  }
+  main{max-width:860px;margin:-56px auto 0;padding:0 24px 80px;position:relative;z-index:2}
+  .grid{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}h1{font-size:26px}.hero{padding:48px 20px 88px}}
+
+  a.card{
+    display:block;background:var(--white);border-radius:18px;padding:22px 22px 20px;
+    text-decoration:none;color:inherit;border:1px solid var(--line);
+    box-shadow:0 10px 30px -18px rgba(10,27,51,.35);
+    transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;
+  }
+  a.card:hover{transform:translateY(-2px);border-color:#C9DBF6;box-shadow:0 16px 34px -18px rgba(31,111,235,.42)}
+  .ico{
+    width:38px;height:38px;border-radius:11px;background:var(--blue-l);color:var(--blue);
+    display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+  }
+  .ico svg{width:19px;height:19px}
+  .card h2{font-size:17px;letter-spacing:-.2px}
+  .card p{color:var(--muted);font-size:13.5px;margin-top:6px}
+  .go{margin-top:14px;color:var(--blue);font-size:13px;font-weight:600}
+  .go span{display:inline-block;transition:transform .16s ease}
+  a.card:hover .go span{transform:translateX(3px)}
+
+  .sec{margin-top:38px}
+  .sec h3{font-size:13px;letter-spacing:.16em;color:var(--muted);font-weight:700;margin-bottom:12px}
+  .doc{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:var(--white);border:1px solid var(--line);border-radius:14px;
+    padding:14px 18px;text-decoration:none;color:inherit;margin-bottom:8px;
+  }
+  .doc:hover{border-color:#C9DBF6}
+  .doc b{font-size:14.5px;font-weight:600}
+  .doc small{display:block;color:var(--muted);font-size:12.5px;font-weight:400;margin-top:2px}
+  .doc .arw{color:#A9BACD;font-size:18px}
+
+  footer{max-width:860px;margin:0 auto;padding:0 24px 60px;color:var(--muted);font-size:12.5px;line-height:1.9}
+  .note{
+    background:#FFF8EC;border:1px solid #F5E2C0;color:#8A5A10;
+    border-radius:12px;padding:12px 16px;font-size:13px;margin-top:26px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">STRIKERS</div>
+    <h1>橄榄球队的微信小程序<br>需求 · 设计 · 可交互原型</h1>
+    <p class="sub">
+      把「微信群接龙 → 队长数人头」这段流程线上化：
+      粘贴接龙自动建名单，一键点名，出勤自动入账。
+    </p>
+    <div class="meta">
+      <span class="pill">美式橄榄球</span>
+      <span class="pill">50+ 人</span>
+      <span class="pill">小程序原生 + 云开发</span>
+      <span class="pill">PRD v1.2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <a class="card" href="prototype/index.html">
+      <div class="ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M8 9l3 3-3 3"/>
+        </svg>
+      </div>
+      <h2>可交互原型</h2>
+      <p>浏览器直接点，跑通「粘贴接龙 → 解析 → 点名 → 出勤入账」全链路。</p>
+      <div class="go">打开原型 <span>→</span></div>
+    </a>
+
+    <a class="card" href="design/mockups.html">
+      <div class="ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 5h4"/><circle cx="12" cy="18" r="1"/>
+        </svg>
+      </div>
+      <h2>视觉设计稿</h2>
+      <p>蓝白主色，9 屏高保真稿 + 设计规范：色板、字阶、组件状态。</p>
+      <div class="go">查看设计稿 <span>→</span></div>
+    </a>
+  </div>
+
+  <div class="sec">
+    <h3>项目文档</h3>
+    <a class="doc" href="https://github.com/DA77ashyt/mini_strikers/blob/main/PRD.md">
+      <span><b>PRD · 产品需求文档</b><small>角色权限、功能模块、伤病档案、数据模型、验收标准</small></span>
+      <span class="arw">›</span>
+    </a>
+    <a class="doc" href="https://github.com/DA77ashyt/mini_strikers/blob/main/ROADMAP.md">
+      <span><b>ROADMAP · 开发周期</b><small>49 人日拆解，A / B / C 三阶段，全职与业余两套时间线</small></span>
+      <span class="arw">›</span>
+    </a>
+    <a class="doc" href="https://github.com/DA77ashyt/mini_strikers/blob/main/RISKS.md">
+      <span><b>RISKS · 难点与风险</b><small>个人主体边界、订阅消息天花板、伤病隐私、接龙解析准确率</small></span>
+      <span class="arw">›</span>
+    </a>
+  </div>
+
+  <div class="note">
+    原型里的队员、比赛、伤病<strong>全是演示用的假数据</strong>，刷新即还原。登录、推送、图片上传等尚未实现。
+  </div>
+</main>
+
+<footer>
+  Strikers 球队小程序 · 需求与设计阶段 · 最后更新 2026-11
+</footer>
+
+</body>
+</html>
