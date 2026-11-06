@@ -43,6 +43,31 @@
 1. 个人主体能选什么类目（大概率只能选「工具」）；
 2. 公众号是订阅号还是服务号（个人订阅号无法做定向推送）。
 
+## 怎么协作（跨机器）
+
+仓库：<https://github.com/DA77ashyt/mini_strikers>（私有）
+
+```powershell
+# 新机器上第一次
+git clone https://github.com/DA77ashyt/mini_strikers.git
+cd mini_strikers
+
+# 日常
+git add -A
+git commit -m "feat: xxx"
+git pull --rebase      # 多人时先拉
+git push
+```
+
+Windows 上建议先开一次代理（git 全局配了 `http.proxy=127.0.0.1:7890`），
+并确认 `git config --global credential.helper manager`，这样推送会走浏览器登录、不用手输 token。
+
+**没有任何构建步骤**：
+
+- 看原型 → 双击 `prototype/index.html`
+- 看设计稿 → 双击 `design/mockups.html`
+- 改完重新出图 → 见 [design/README.md](design/README.md)、[prototype/README.md](prototype/README.md) 里的截图命令
+
 ## 下一步
 
 1. 用 [prototype/](prototype/README.md) 给队里几位核心成员试一遍，收集真实接龙样本；
