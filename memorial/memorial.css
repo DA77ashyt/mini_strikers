@@ -1,0 +1,261 @@
+/* ============================================================
+   STRIKERS · 队史馆 —— 扩展层
+   ------------------------------------------------------------
+   分工：
+   · styles.css   = 设计系统基线（与 prototype/styles.css 完全同源，可 diff）
+   · memorial.css = 队史馆新增组件（本文件）
+   只新增 class，从不覆盖基线里的 token 与组件 → 保证「设计风格不变」
+   ============================================================ */
+
+/* ---------- 照片容器（内联 SVG 占位） ---------- */
+.ph{position:relative; width:100%; background:#0B1A26; border-radius:12px; overflow:hidden; display:block;}
+.ph svg{width:100%; height:100%; display:block; flex:none;}
+.ph::after{content:""; position:absolute; inset:0; border-radius:inherit; box-shadow:inset 0 0 0 1px rgba(10,27,51,.06);}
+
+/* ---------- 封面 ---------- */
+.cover2{position:relative; height:420px; overflow:hidden; background:#07121F;}
+.cover2-bg{position:absolute; inset:0; transform:scale(1.04);}
+.cover2-bg svg{width:100%; height:100%; display:block;}
+.cover2-scrim{position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(11,10,61,.34) 0%,rgba(19,16,66,.60) 42%,rgba(11,10,61,.94) 88%,#0B0A3D 100%);}
+.cover2-in{position:absolute; left:0; right:0; bottom:0; padding:0 22px 62px; color:#fff;}
+.crest{width:44px; height:44px; margin-bottom:12px; opacity:.9;}
+.crest svg{width:44px; height:44px; display:block;}
+.kick{font-size:10.5px; letter-spacing:.34em; color:#9CC2FF; font-weight:600;}
+.yrs{font-size:42px; font-weight:800; line-height:1.1; margin:8px 0 0; font-variant-numeric:tabular-nums;}
+.yrs span{color:#5FA0FF; margin:0 6px; font-weight:300;}
+.c2-motto{font-size:12.5px; color:#A9C4EA; line-height:1.7; margin-top:10px; max-width:86%;}
+.btn-c2{margin-top:18px; height:40px; border-radius:20px; padding:0 20px; border:1px solid rgba(255,255,255,.34);
+  background:rgba(255,255,255,.10); color:#fff; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer;}
+.btn-c2:active{transform:scale(.98);}
+
+/* 数字条 */
+.statbar{margin:-30px 16px 0; position:relative; z-index:3; display:flex; background:#fff;
+  border-radius:16px; padding:14px 0; box-shadow:var(--shadow);}
+.sb{flex:1; text-align:center; position:relative;}
+.sb+.sb::before{content:""; position:absolute; left:0; top:4px; bottom:4px; width:1px; background:var(--line);}
+.sb b{font-size:21px; font-weight:800; font-variant-numeric:tabular-nums;}
+.sb i{font-size:10px; font-style:normal; color:var(--blue); font-weight:700; margin-left:1px;}
+.sb span{display:block; font-size:9.5px; color:var(--muted); margin-top:2px;}
+
+/* ---------- 引言 ---------- */
+.quote{margin:16px 16px 0; background:#F1F1FB; border-left:3px solid var(--blue); border-radius:0 14px 14px 0;
+  padding:16px 16px 14px;}
+.quote p{font-size:14px; line-height:1.85; color:var(--ink2); font-weight:500;}
+.qmark{font-family:Georgia,serif; font-size:30px; line-height:.6; color:#9CC2FF; height:16px;}
+.qby{margin-top:10px; font-size:12px; font-weight:700; color:var(--ink); cursor:pointer;}
+.qby span{display:block; font-size:10.5px; color:var(--muted); font-weight:400; margin-top:2px;}
+.quote.sm2{margin:14px 0 0;}
+.quote.sm2 p{font-size:13.5px;}
+
+/* ---------- 事件卡 ---------- */
+.evcard{overflow:hidden; cursor:pointer;}
+.evph{border-radius:0; aspect-ratio:16/9;}
+.evbody{padding:12px 14px 14px;}
+.evt{font-size:17px; font-weight:800; margin-top:8px; line-height:1.35;}
+.evs{font-size:12.5px; color:var(--muted); line-height:1.72; margin-top:6px;}
+.mini{display:flex; gap:10px; align-items:center; background:#fff; border:1px solid var(--line);
+  border-radius:14px; padding:10px; cursor:pointer;}
+.miniph{width:62px; flex:0 0 62px; border-radius:10px; aspect-ratio:1/1;}
+.minib{min-width:0;}
+.mini-t{font-size:13.5px; font-weight:700; margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+
+/* ---------- 横滑影像 ---------- */
+.hscroll{display:flex; gap:10px; overflow-x:auto; padding:2px 16px 6px;}
+.hcard{flex:0 0 124px; cursor:pointer;}
+.hmeta{font-size:10.5px; color:var(--muted); margin-top:6px; line-height:1.4;}
+.hmeta span{color:var(--blue); font-weight:700; margin-right:4px;}
+
+/* ---------- 毕业墙 ---------- */
+.gradwall{background:linear-gradient(155deg,#141371 0%,#0D2B67 55%,#073A8B 100%); color:#fff; padding:16px; cursor:pointer;}
+.gw-top b{font-size:22px; font-weight:800;}
+.gw-top span{font-size:11.5px; color:#A9C4EA; margin-left:8px;}
+.gw-av{margin-top:12px;}
+.gw-av .avatar{box-shadow:0 0 0 1.5px rgba(255,255,255,.22);}
+.gw-av .tiny{color:#9CC2FF;}
+.gw-foot{margin-top:14px; padding-top:10px; border-top:1px solid rgba(255,255,255,.14);
+  font-size:11.5px; color:#C6DBF6; display:flex; justify-content:space-between;}
+.gw-foot .go{color:#8CB9FF;}
+
+/* ---------- 纪录 ---------- */
+.rec{display:flex; align-items:center; padding:13px 14px; border-bottom:1px solid #F0F3F8; gap:10px;}
+.rec:last-child{border-bottom:0;}
+.rl{font-size:13px; font-weight:600; color:var(--ink2); flex:1; min-width:0;}
+.rn{font-size:10.5px; color:var(--faint); flex:0 0 auto; max-width:42%; text-align:right; line-height:1.4;}
+.rv{font-size:16px; font-weight:800; color:var(--blue); font-variant-numeric:tabular-nums; min-width:50px; text-align:right;}
+
+/* ---------- 记忆 ---------- */
+.memo{display:flex; flex-direction:column; gap:10px;}
+.memo-i{background:#fff; border:1px solid var(--line); border-radius:14px; padding:13px 14px; cursor:pointer;}
+.memo-i.nb{cursor:default; margin-bottom:10px;}
+.memo-q{font-size:13px; line-height:1.8; color:var(--ink2);}
+.memo-q::before{content:"\201C"; color:#B9D2F7; font-family:Georgia,serif; font-size:15px; margin-right:1px;}
+.memo-by{display:flex; align-items:center; gap:8px; margin-top:10px; font-size:11px; color:var(--muted);}
+
+/* ---------- 年份条 ---------- */
+.yearbar{position:sticky; top:0; z-index:5; display:flex; gap:7px; overflow-x:auto; padding:9px 16px;
+  background:rgba(255,255,255,.94); backdrop-filter:saturate(1.4) blur(10px); border-bottom:1px solid var(--line);}
+.ychip{flex:0 0 auto; height:28px; padding:0 11px; border-radius:14px; border:1px solid var(--line);
+  background:#fff; color:var(--muted); font-size:12px; font-weight:600; font-family:inherit; cursor:pointer;
+  font-variant-numeric:tabular-nums;}
+.ychip i{font-style:normal; font-size:9.5px; opacity:.65; margin-left:2px;}
+.ychip.on{background:var(--ink); border-color:var(--ink); color:#fff;}
+
+/* ---------- 编年史 ---------- */
+.yr{position:relative;}
+.yrline{margin:6px 0 10px;}
+.yrline span{font-size:26px; font-weight:800; color:var(--ink); letter-spacing:.02em; font-variant-numeric:tabular-nums;}
+.tl{padding-left:22px;}
+.tli{position:relative; padding:0 0 20px;}
+.tli::before{left:-21px; top:4px; width:9px; height:9px; border:2px solid var(--blue); background:#fff;}
+.tli::after{content:""; position:absolute; left:-17px; top:16px; bottom:4px; width:1.5px; background:var(--line);}
+.tli:last-child::after{display:none;}
+.evm{display:flex; align-items:center; gap:7px;}
+.evm .d{font-size:11px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums;}
+.ev-h{font-size:16px; font-weight:800; margin-top:6px; line-height:1.4;}
+.ev-p{font-size:12.5px; color:var(--muted); line-height:1.75; margin-top:5px;}
+.ev-photo{margin-top:10px; cursor:pointer;}
+.ev-photo .ph{aspect-ratio:16/10;}
+
+/* ---------- 相册 ---------- */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:12px 16px 0;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:2px 16px 0;}
+.gal{cursor:pointer; position:relative;}
+.grid3 .gal .ph{border-radius:8px;}
+.galcap{margin-top:6px; font-size:10.5px; color:var(--muted); line-height:1.4;}
+.galcap span{color:var(--blue); font-weight:700; margin-right:4px;}
+
+/* ---------- 照片详情 ---------- */
+.theater{background:#06101C;}
+.theater svg{width:100%; height:auto; display:block;}
+.ph-t{font-size:22px; font-weight:800; margin-top:10px; line-height:1.35;}
+.ph-c{font-size:13.5px; line-height:1.85; color:var(--ink2); margin-top:10px;}
+.meta2{margin-top:14px; border-top:1px solid var(--line);}
+.mrow{display:flex; justify-content:space-between; align-items:center; padding:10px 0;
+  border-bottom:1px solid #F0F3F8; font-size:12px; gap:12px;}
+.mrow span{color:var(--muted); flex:0 0 auto;}
+.mrow b{font-weight:600; text-align:right;}
+.plist{display:flex; flex-direction:column; gap:8px;}
+.ppl{display:flex; align-items:center; gap:10px; background:#fff; border:1px solid var(--line);
+  border-radius:12px; padding:9px 12px; cursor:pointer;}
+.ppl b{display:block; font-size:13.5px; font-weight:700;}
+.ppl span{display:block; font-size:10.5px; color:var(--muted); margin-top:2px;}
+.linkrow{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; cursor:pointer; gap:10px;}
+.linkrow b{display:block; font-size:14px; font-weight:700;}
+.linkrow span{display:block; font-size:11px; color:var(--muted); margin-top:3px;}
+.linkrow .go{font-size:20px; color:#C6D0DE;}
+.pn{display:flex; gap:10px; margin-top:16px;}
+.pn .btn{height:42px; font-size:13px;}
+
+/* ---------- 名册 ---------- */
+.rc-row{padding:12px 14px;}
+.jnum{width:34px; flex:0 0 34px; text-align:center; font-size:17px; font-weight:800; color:var(--ink);
+  font-variant-numeric:tabular-nums;}
+.rci b{display:block; font-size:14px; font-weight:700;}
+.rci span{display:block; font-size:10.5px; color:var(--muted); margin-top:2px;}
+.rch{margin-left:auto; max-width:34%; text-align:right;}
+.retired{padding:14px 16px 4px;}
+.rt{font-size:11px; color:var(--muted); letter-spacing:.1em; font-weight:600;}
+.rti{display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #F0F3F8;}
+.rti:last-child{border-bottom:0;}
+.rtnum{width:40px; flex:0 0 40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  font-size:19px; font-weight:800; background:var(--ink); color:#fff; font-variant-numeric:tabular-nums;}
+.rti b{display:block; font-size:13.5px; font-weight:700;}
+.rti span{display:block; font-size:10.5px; color:var(--muted); line-height:1.6; margin-top:2px;}
+
+/* ---------- 个人页 ---------- */
+.phero{position:relative; height:300px; overflow:hidden; background:#07121F;}
+.phero-bg{position:absolute; inset:0;}
+.phero-bg svg{width:100%; height:100%; display:block;}
+.phero-bg.alt{background:linear-gradient(150deg,#141371,#073A8B);}
+.phero-scrim{position:absolute; inset:0; background:linear-gradient(180deg,rgba(11,10,61,.26),rgba(11,10,61,.92) 92%);}
+.phero-in{position:absolute; left:0; right:0; bottom:52px; padding:0 18px; color:#fff;}
+.pnum{position:absolute; right:16px; bottom:26px; font-size:76px; font-weight:800; line-height:1;
+  color:rgba(255,255,255,.16); font-variant-numeric:tabular-nums;}
+.pkick{font-size:10.5px; letter-spacing:.2em; color:#9CC2FF; font-weight:600;}
+.phero-in h1{font-size:26px; font-weight:800; margin-top:6px;}
+.psub{font-size:11.5px; color:#A9C4EA; margin-top:4px;}
+.evdot{width:40px; flex:0 0 40px; text-align:center; font-size:10.5px; font-weight:700; color:var(--blue);}
+
+/* ---------- 长文 ---------- */
+.skick{font-size:10.5px; letter-spacing:.16em; color:var(--blue); font-weight:700; margin-top:10px;}
+.sk-title{font-size:23px; font-weight:800; line-height:1.42; margin-top:8px;}
+.sby{display:flex; align-items:center; gap:9px; margin-top:14px; cursor:pointer;}
+.sby b{display:block; font-size:12.5px; font-weight:700;}
+.sby span{display:block; font-size:10.5px; color:var(--muted); margin-top:1px;}
+.slead{font-size:15px; line-height:1.8; color:var(--ink); font-weight:600; margin:18px 0 4px;
+  padding-left:12px; border-left:3px solid var(--blue);}
+.sp{font-size:14px; line-height:2; color:var(--ink2); margin-top:16px; text-align:justify;}
+.sp:first-of-type::first-letter{font-size:31px; font-weight:800; float:left; line-height:1.1;
+  margin:3px 8px 0 0; color:var(--ink);}
+
+/* ---------- 我的 ---------- */
+.me-q{margin-top:14px; font-size:12.5px; color:#C6DBF6; line-height:1.75;}
+.invite{background:#F1F1FB; border:1px solid #DCDBF5; border-radius:16px; padding:16px;}
+.iv-t{font-size:14px; font-weight:800;}
+.iv-s{font-size:11.5px; color:var(--muted); line-height:1.75; margin-top:6px;}
+.empty{padding:24px 16px; text-align:center; color:var(--faint); font-size:12.5px;}
+
+/* ---------- 上传 ---------- */
+.hint{font-size:12px; color:var(--muted); line-height:1.8;}
+.upload{height:150px; border:1.5px dashed #B9D2F7; border-radius:16px; background:#FBFDFF;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; cursor:pointer;}
+.up-add{width:38px; height:38px; border-radius:50%; background:var(--blue-l); color:var(--blue);
+  display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:300;}
+.up-t{font-size:12.5px; font-weight:600; color:var(--ink2);}
+.up-ok{text-align:center; font-size:12.5px; font-weight:600; color:var(--blue);}
+.up-ok span{display:block; font-size:10.5px; color:var(--faint); font-weight:400; margin-top:4px;}
+
+/* ---------- 自检 ---------- */
+.stok{margin:12px 16px 0; padding:12px 14px; border-radius:12px; background:#E7F7F0; color:#0B8A55;
+  font-size:13px; font-weight:700; border:1px solid #B6E9D4;}
+.sterr{margin:12px 16px 0; padding:12px 14px; border-radius:12px; background:#FEECEC; color:#C42929;
+  font-size:13px; font-weight:700; border:1px solid #F8C9C9;}
+.stlist{margin:8px 16px 0; font-size:11.5px; color:#C42929; line-height:1.7;}
+.strow{display:flex; justify-content:space-between; align-items:center; padding:11px 0;
+  border-bottom:1px solid #F0F3F8; font-size:13px; cursor:pointer;}
+.strow:last-child{border-bottom:0;}
+.strow b{font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums;}
+.strow b.go{color:var(--blue); font-weight:600; font-size:11.5px;}
+code{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px; background:#EEF2F8;
+  padding:1px 5px; border-radius:4px; color:var(--ink2);}
+
+/* ---------- 其它 ---------- */
+.go{color:var(--blue); font-weight:600; cursor:pointer;}
+.foot{text-align:center; font-size:10.5px; color:var(--faint); line-height:1.9; padding:20px 16px 10px;}
+#tabbar{background:#fff;}
+.crash{padding:28px 20px;}
+.crash b{font-size:16px;color:var(--red);}
+.crash p{font-size:12px;color:var(--muted);margin-top:8px;}
+.crash pre{margin-top:12px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:10px;font-size:10.5px;line-height:1.6;color:#C42929;white-space:pre-wrap;word-break:break-all;}
+.crash .btn{margin-top:16px;}
+.brand{font-size:13px; letter-spacing:.42em; font-weight:700; color:#DCE9FF; margin-top:14px}
+
+
+/* ---------- 照片调色 ----------
+   内联 SVG 场景本身偏暗，这里统一做一次「档案照」调色：
+   提亮 + 轻微去饱和 + 蓝色柔光叠层，让 18 张占位照片看起来像同一卷胶片，
+   同时把主色调拉回球队蓝白。真接入真照片时，删掉这一段即可。 */
+.ph svg,.cover2-bg svg{filter:brightness(1.42) contrast(1.04) saturate(.9);}
+.phero-bg svg{filter:brightness(1.75) contrast(1.02) saturate(.85);}
+.ph::before{content:""; position:absolute; inset:0; z-index:2; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(172deg,rgba(7,58,139,.18) 0%,rgba(7,58,139,.02) 42%,rgba(11,10,61,.36) 100%);
+  mix-blend-mode:soft-light;}
+.scroll > .pad:first-child .hint{margin-top:12px;}
+
+/* ---------------------------------------------------------------
+   品牌蓝：双基准 —— 突袭者蓝 rgb(20,19,113) #141371 + 海军蓝 rgb(7,58,139) #073A8B
+   #141371 压深色面（夜空/封面/渐变底），#073A8B 做可交互的亮色（链接/按钮/选中态）。
+   只覆盖蓝色三件套，不动 --ink / --green / --amber / --red 等语义色。
+   --------------------------------------------------------------- */
+:root{
+  --brand-900:#0B0A3D;
+  --brand-800:#141371;   /* 突袭者蓝 */
+  --brand-700:#073A8B;   /* 海军蓝   */
+  --brand-600:#0F52B5;
+  --brand-100:#E7EDF9;
+  --brand-50:#F2F5FC;
+  --blue:var(--brand-700);
+  --blue-d:var(--brand-900);
+  --blue-l:var(--brand-100);
+}
