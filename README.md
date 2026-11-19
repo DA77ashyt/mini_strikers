@@ -108,6 +108,8 @@ python build_board.py         # 拼 3×3 总览图 out/board9.png
 │   └── out/                      截图产物（board9.png 是总览）
 ├── prototype/                    训练侧原型 v1（接龙 → 点名 → 统计）
 ├── design/                       设计稿：8 页 + 设计规范
+├── ROADMAP-MEMORIAL.md           纪念版路线图：M0–M5、10 周节奏、分工、验收清单
+├── TOOLS.md                      工具清单：开发 / 产品协作 / 上线合规 / 成本
 ├── PRD.md / ROADMAP.md / RISKS.md  训练侧需求与风险（v1 内容，尚未改写成队史馆）
 ```
 
@@ -143,3 +145,6 @@ Windows 上推送前先开代理（git 配的是 `http.proxy=127.0.0.1:7890`）�
 1. **让队里看真东西**：挑 20 张真照片 + 1 篇真人写的长文，验证「录入成本」能不能接受；
 2. **写队史馆 PRD**：先定审核与认领，再谈功能；
 3. **转小程序**：一页对一页建 WXML，两份 CSS 转两份 WXSS，`data.js` 的集合直连云数据库集合。
+
+排期与分工见 [`ROADMAP-MEMORIAL.md`](ROADMAP-MEMORIAL.md)（M0–M5，约定 10 周做完 MVP），
+需要装的工具见 [`TOOLS.md`](TOOLS.md)（含「本周就能开始的最小工具集」）。
