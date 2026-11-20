@@ -1,0 +1,35 @@
+.yearbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(244, 247, 252, 0.94);
+  border-bottom: 2rpx solid var(--line);
+  padding: 16rpx 0;
+}
+.yearbar-in {
+  display: flex;
+  white-space: nowrap;
+  padding: 0 28rpx;
+}
+.yearbar .chip { margin-right: 16rpx; }
+.yearbar .chip:last-child { margin-right: 0; }
+.chip-n {
+  font-size: 20rpx;
+  margin-left: 8rpx;
+  opacity: 0.62;
+}
+
+.album-note { margin: 24rpx 0 20rpx; }
+
+.gal { column-count: 2; column-gap: 20rpx; }
+.gal-item {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  margin-bottom: 22rpx;
+}
+.gal-cap {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 10rpx;
+}

@@ -1,0 +1,92 @@
+<view class="page">
+  <!-- 封面 -->
+  <view class="hero">
+    <view class="hero-art"></view>
+    <view class="hero-in">
+      <view class="crest">S</view>
+      <view class="kick">{{team.en}}</view>
+      <view class="kick-sub">EST. {{team.founded}} · {{team.city}}</view>
+      <view class="yrs">{{team.years[0]}} — {{team.years[1]}}</view>
+      <view class="motto">{{team.motto}}</view>
+      <view class="btn ghost hero-btn" bindtap="goTimeline">走进编年史 ›</view>
+    </view>
+  </view>
+
+  <!-- 数字条 -->
+  <view class="stats card">
+    <view class="sb" wx:for="{{stats}}" wx:key="l">
+      <view class="sb-v mono-num">{{item.v}}<text class="sb-u">{{item.u}}</text></view>
+      <view class="sb-l">{{item.l}}</view>
+    </view>
+  </view>
+
+  <view class="wrap">
+    <!-- 引言 -->
+    <view class="quote">
+      <text class="qmark">“</text>
+      <view class="q-text">{{quote.text}}</view>
+      <view class="q-by">— {{quote.by}}</view>
+      <view class="q-role">{{quote.role}}</view>
+    </view>
+
+    <!-- 最近 -->
+    <view class="sec">
+      <text class="h">最近</text>
+      <text class="more" bindtap="goTimeline">全部 18 条 ›</text>
+    </view>
+    <view class="evcard" wx:for="{{recent}}" wx:key="id" data-id="{{item.id}}" bindtap="openEvent">
+      <ph kind="{{item.kind}}" ratio="4/3" radius="24rpx" />
+      <view class="ev-body">
+        <view class="row g8">
+          <text class="tag">{{item.kindName}}</text>
+          <text class="t12 faint">{{item.d}}</text>
+        </view>
+        <view class="t17 mt8">{{item.title}}</view>
+        <view class="t13 muted mt8 ev-sum">{{item.summary}}</view>
+        <view class="t13 brand mt8" wx:if="{{item.hasStory}}">读这一段 ›</view>
+      </view>
+    </view>
+
+    <!-- 影像 -->
+    <view class="sec">
+      <text class="h">影像</text>
+      <text class="more" bindtap="goAlbum">相册 ›</text>
+    </view>
+    <scroll-view class="hscroll" scroll-x enable-flex show-scrollbar="{{false}}">
+      <view class="hcard" wx:for="{{photos}}" wx:key="id" data-id="{{item.id}}" bindtap="openPhoto">
+        <ph kind="{{item.kind}}" ratio="{{item.ratio}}" radius="20rpx" />
+        <view class="t12 mt8">{{item.title}}</view>
+      </view>
+    </scroll-view>
+
+    <!-- 毕业墙 -->
+    <view class="card gradwall mt24" bindtap="goRoster">
+      <view class="between">
+        <view>
+          <view class="t17 gw-t">毕业墙</view>
+          <view class="t13 gw-s">{{alumni}} 个人已经离队，号码和故事留在这里</view>
+        </view>
+        <text class="gw-go">›</text>
+      </view>
+    </view>
+
+    <!-- 数字里的队史 -->
+    <view class="sec"><text class="h">数字里的队史</text></view>
+    <view class="card flat rec">
+      <view class="rec-row" wx:for="{{records}}" wx:key="label">
+        <view class="grow">
+          <view class="t14 bold">{{item.label}}</view>
+          <view class="t11 muted mt8">{{item.note}}</view>
+        </view>
+        <text class="rec-v mono-num">{{item.value}}</text>
+      </view>
+    </view>
+
+    <view class="btn primary block mt24" bindtap="random">随便翻一页</view>
+
+    <view class="foot">
+      <view>STRIKERS 队史馆 · 演示数据</view>
+      <view>照片为占位图，队员与事件均为示例</view>
+    </view>
+  </view>
+</view>

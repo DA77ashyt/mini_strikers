@@ -1,0 +1,53 @@
+.yearbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(244, 247, 252, 0.94);
+  border-bottom: 2rpx solid var(--line);
+  padding: 16rpx 0;
+}
+.yearbar-in {
+  display: flex;
+  white-space: nowrap;
+  padding: 0 28rpx;
+}
+.yearbar .chip { margin-right: 16rpx; }
+.yearbar .chip:last-child { margin-right: 0; }
+
+.yr { padding-top: 20rpx; }
+.yr-h {
+  font-size: 52rpx;
+  font-weight: 700;
+  letter-spacing: -1rpx;
+  margin: 24rpx 0 20rpx;
+}
+
+.tli { display: flex; }
+.tl-rail {
+  width: 40rpx;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10rpx;
+}
+.tl-dot {
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 50%;
+  border: 4rpx solid var(--brand-700);
+  background: #fff;
+  flex: none;
+}
+.tl-line {
+  flex: 1;
+  width: 2rpx;
+  background: var(--line);
+  margin-top: 8rpx;
+}
+.tl-body {
+  flex: 1;
+  min-width: 0;
+  padding: 0 0 44rpx 16rpx;
+}
+.tl-body:active { opacity: 0.9; }

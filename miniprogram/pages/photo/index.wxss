@@ -1,0 +1,22 @@
+.cap { line-height: 1.75; }
+
+.meta { padding: 4rpx 28rpx; }
+.mrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid var(--line);
+}
+.mrow:last-child { border-bottom: 0; }
+.mk { font-size: 24rpx; color: var(--muted); }
+.mv { font-size: 26rpx; font-weight: 600; }
+
+.ev-meta { color: rgba(255, 255, 255, 0.66); }
+.ev-more { color: #9CC2FF; }
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

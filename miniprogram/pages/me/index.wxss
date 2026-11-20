@@ -1,0 +1,40 @@
+.mhero {
+  background: linear-gradient(160deg, var(--brand-900) 0%, var(--brand-800) 60%, var(--brand-700) 100%);
+  padding: 44rpx 32rpx 88rpx;
+}
+.mhero-sub { color: rgba(255, 255, 255, 0.66); margin-top: 8rpx; }
+.mhero-quote {
+  font-size: 26rpx;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 30rpx;
+}
+.num-badge {
+  width: 108rpx;
+  height: 108rpx;
+  border-radius: 24rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 44rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stats { margin: -56rpx 28rpx 0; position: relative; }
+
+.memo {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  font-size: 27rpx;
+  line-height: 1.75;
+  color: var(--ink2);
+  box-shadow: var(--shadow);
+  margin-bottom: 20rpx;
+}
+.memo-q { color: var(--brand-600); font-size: 36rpx; margin-right: 4rpx; }
+
+.invite { background: var(--brand-50); box-shadow: none; border: 2rpx solid var(--brand-100); }

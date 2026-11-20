@@ -1,0 +1,204 @@
+/* 照片占位：纯 CSS 场景，不依赖任何图片资源。
+   接上真实照片后，传 src 即可自动换成 <image>。 */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.ph {
+  position: relative;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  background: #0A1330;
+}
+
+.ph-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.art { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+
+.vig {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(120% 82% at 50% 0%, rgba(0, 0, 0, 0) 38%, rgba(3, 6, 20, 0.5) 100%);
+}
+
+.ph-label {
+  position: absolute;
+  left: 16rpx;
+  bottom: 12rpx;
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.72);
+  letter-spacing: 0.5rpx;
+}
+
+/* 底色 */
+.ph-field { background: linear-gradient(180deg, #0A1330 0%, #0B1B44 26%, #0F2C66 52%, #0A2049 76%, #061530 100%); }
+.ph-team { background: linear-gradient(180deg, #080E2A 0%, #0D1C4A 34%, #0F2C66 64%, #081734 100%); }
+.ph-empty { background: linear-gradient(180deg, #0B0F2A 0%, #101F4B 46%, #0A1A3D 100%); }
+.ph-trophy { background: radial-gradient(62% 56% at 50% 40%, #4A3A18 0%, #1A1508 58%, #08080F 100%); }
+.ph-celebration { background: radial-gradient(72% 62% at 50% 56%, #25325F 0%, #0C1030 68%, #07091A 100%); }
+.ph-bus { background: linear-gradient(180deg, #2A2140 0%, #1B1B3E 44%, #101A38 100%); }
+.ph-hands { background: radial-gradient(54% 52% at 42% 46%, #4B3A2E 0%, #16233E 58%, #080E22 100%); }
+.ph-board { background: linear-gradient(160deg, #0C1A38 0%, #12264F 52%, #081227 100%); }
+.ph-locker { background: linear-gradient(180deg, #0A0F28 0%, #14224A 56%, #0A1330 100%); }
+.ph-mud { background: linear-gradient(160deg, #0E1930 0%, #1E2A3A 42%, #0A1424 100%); }
+.ph-portrait { background: linear-gradient(200deg, #101C42 0%, #0A1030 58%, #070A20 100%); }
+.ph-ring { background: radial-gradient(60% 60% at 50% 50%, #1A1A46 0%, #0B0B2A 62%, #06061A 100%); }
+
+/* 球场：横向码线 */
+.pitch {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 54%;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(163, 196, 240, 0.10) 0,
+    rgba(163, 196, 240, 0.10) 3rpx,
+    rgba(0, 0, 0, 0) 3rpx,
+    rgba(0, 0, 0, 0) 92rpx
+  );
+}
+
+/* 球员剪影 */
+.fig {
+  position: absolute;
+  bottom: 10%;
+  width: 30rpx;
+  height: 96rpx;
+  background: #040A1A;
+  border-radius: 14rpx 14rpx 6rpx 6rpx;
+}
+.fig::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -18rpx;
+  width: 24rpx;
+  height: 24rpx;
+  margin-left: -12rpx;
+  background: #040A1A;
+  border-radius: 50%;
+}
+
+/* 更衣室球衣 */
+.jersey {
+  position: absolute;
+  top: 20%;
+  width: 17%;
+  height: 44%;
+  background: linear-gradient(180deg, #1B2C62, #0C1738);
+  border-radius: 10rpx 10rpx 24rpx 24rpx;
+  box-shadow: inset 0 -8rpx 20rpx rgba(0, 0, 0, 0.35);
+}
+.jersey::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -14rpx;
+  width: 26rpx;
+  height: 14rpx;
+  margin-left: -13rpx;
+  border-radius: 3rpx 3rpx 0 0;
+  background: rgba(190, 210, 245, 0.6);
+}
+
+/* 奖杯 */
+.cup {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  width: 108rpx;
+  height: 108rpx;
+  margin-left: -54rpx;
+  background: linear-gradient(160deg, #F8E2A4, #C9973F 70%, #8E6522);
+  border-radius: 14rpx 14rpx 48rpx 48rpx;
+  box-shadow: 0 0 40rpx rgba(248, 226, 164, 0.28);
+}
+.cup-foot {
+  position: absolute;
+  left: 50%;
+  top: 68%;
+  width: 132rpx;
+  height: 20rpx;
+  margin-left: -66rpx;
+  border-radius: 6rpx;
+  background: linear-gradient(160deg, #F8E2A4, #A87C2E);
+}
+
+/* 彩带点 */
+.dot {
+  position: absolute;
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* 大巴车窗 + 落日 */
+.win {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 18%;
+  height: 48%;
+  border: 4rpx solid rgba(196, 214, 248, 0.45);
+  border-radius: 16rpx;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
+}
+.sun {
+  position: absolute;
+  right: 22%;
+  top: 40%;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: #F2D27A;
+  box-shadow: 0 0 48rpx rgba(242, 210, 122, 0.5);
+}
+
+/* 队徽环 */
+.ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 200rpx;
+  height: 200rpx;
+  margin: -100rpx 0 0 -100rpx;
+  border: 6rpx solid rgba(232, 200, 122, 0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 50rpx rgba(232, 200, 122, 0.22), inset 0 0 40rpx rgba(232, 200, 122, 0.16);
+}
+.ring-x {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin-top: -46rpx;
+  text-align: center;
+  font-size: 92rpx;
+  font-weight: 700;
+  color: #E8C87A;
+  font-family: "Songti SC", serif;
+}
+
+/* 泥地脚印 */
+.boot {
+  position: absolute;
+  width: 40rpx;
+  height: 22rpx;
+  border-radius: 8rpx;
+  background: rgba(6, 12, 26, 0.55);
+  transform: rotate(-18deg);
+}

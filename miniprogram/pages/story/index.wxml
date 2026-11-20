@@ -1,0 +1,39 @@
+<view class="page" wx:if="{{s}}">
+  <view class="wrap">
+    <view class="t12 brand bold mono-num mt24">{{s.date}} · {{kindName}}</view>
+    <view class="stitle mt12">{{s.title}}</view>
+
+    <view class="row mt24 byline" bindtap="openPerson">
+      <view class="avatar" style="margin-right:20rpx;">{{author.ch}}</view>
+      <view class="grow">
+        <view class="t14 bold">{{author.name}}</view>
+        <view class="t11 muted mt6">{{author.pos}}<text wx:if="{{author.years}}"> · {{author.years}}</text></view>
+      </view>
+      <text class="li-arw">›</text>
+    </view>
+
+    <view class="slead mt24">{{s.lead}}</view>
+
+    <block wx:if="{{cover}}">
+      <ph class="mt24" kind="{{cover.kind}}" ratio="3/2" radius="24rpx" />
+      <view class="t11 faint sc mt8" wx:if="{{cover.caption}}">{{cover.caption}}</view>
+    </block>
+
+    <view class="sbody">
+      <view
+        wx:for="{{s.paras}}"
+        wx:key="*this"
+        class="sp {{index === 0 ? 'first' : ''}}"
+      >{{item}}</view>
+
+      <block wx:if="{{inner}}">
+        <ph class="mt12" kind="{{inner.kind}}" ratio="3/2" radius="24rpx" />
+        <view class="t11 faint sc mt8" wx:if="{{inner.caption}}">{{inner.caption}}</view>
+      </block>
+    </view>
+
+    <view class="sign">—— {{author.name}}<text class="t11 faint" wx:if="{{author.years}}">，{{author.years}}</text></view>
+
+    <view class="foot">队史长文 · 演示内容</view>
+  </view>
+</view>

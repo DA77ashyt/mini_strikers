@@ -1,0 +1,56 @@
+<view class="page" wx:if="{{p}}">
+  <ph kind="{{p.kind}}" ratio="{{p.ratio}}" radius="0" />
+
+  <view class="wrap">
+    <view class="row g8 mt24">
+      <text class="tag">{{p.year}}</text>
+      <text class="t12 muted">{{kind}}</text>
+    </view>
+
+    <view class="t24 mt12">{{p.title}}</view>
+    <view class="t15 ink2 mt12 cap" wx:if="{{p.caption}}">{{p.caption}}</view>
+
+    <view class="card flat meta mt24">
+      <view class="mrow">
+        <text class="mk">拍摄</text>
+        <text class="mv mono-num">{{p.date}}</text>
+      </view>
+      <view class="mrow">
+        <text class="mk">地点</text>
+        <text class="mv">{{p.place}}</text>
+      </view>
+      <view class="mrow">
+        <text class="mk">照片里</text>
+        <text class="mv">{{people.length}} 人</text>
+      </view>
+    </view>
+
+    <view class="sec" wx:if="{{people.length}}"><text class="h">照片里的人</text></view>
+    <view class="card list" wx:if="{{people.length}}">
+      <view class="li" wx:for="{{people}}" wx:key="id" data-id="{{item.id}}" bindtap="openPerson">
+        <view class="avatar sm" style="margin-right:20rpx;">{{item.ch}}</view>
+        <view class="grow">
+          <view class="t14 bold">{{item.name}}</view>
+          <view class="t11 muted mt6">{{item.pos}}</view>
+        </view>
+        <text class="li-arw">›</text>
+      </view>
+    </view>
+
+    <view class="card dark mt24" wx:if="{{event}}" bindtap="openEvent">
+      <view class="t12 ev-meta">{{event.d}} · {{event.kindName}}</view>
+      <view class="t17 mt8">{{event.title}}</view>
+      <view class="t12 mt8 ev-more">这条照片所属的编年 ›</view>
+    </view>
+
+    <view class="pager mt24">
+      <view class="btn sm" bindtap="prev">上一张</view>
+      <text class="t12 faint">{{idx}} / {{total}}</text>
+      <view class="btn sm" bindtap="next">下一张</view>
+    </view>
+
+    <view class="foot">照片为演示占位图</view>
+  </view>
+</view>
+
+<view class="empty" wx:else>照片不存在</view>

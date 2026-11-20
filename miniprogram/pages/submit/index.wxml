@@ -1,0 +1,55 @@
+<view class="page">
+  <view class="wrap">
+    <view class="t13 muted mt24">一张照片、一句话，就够。提交后由队史编辑整理入馆。</view>
+
+    <view class="upload mt16" bindtap="choosePhoto">
+      <image wx:if="{{photo}}" class="up-img" src="{{photo}}" mode="aspectFill" />
+      <block wx:else>
+        <view class="up-plus">+</view>
+        <view class="t14 bold mt12">添加照片</view>
+        <view class="t11 faint mt6">jpg / png，建议横版</view>
+      </block>
+    </view>
+
+    <view class="t14 bold mt24">什么时候</view>
+    <view class="ychips mt12">
+      <view
+        wx:for="{{years}}"
+        wx:key="*this"
+        class="chip {{year === item ? 'on' : ''}}"
+        data-year="{{item}}"
+        bindtap="pickYear"
+      >{{item}}</view>
+    </view>
+
+    <view class="t14 bold mt24">一句话</view>
+    <view class="ta mt12">
+      <textarea
+        class="ta-in"
+        placeholder="那天发生了什么？"
+        placeholder-class="ta-ph"
+        maxlength="200"
+        value="{{text}}"
+        bindinput="onText"
+      />
+      <view class="t11 faint ta-n">{{text.length}}/200</view>
+    </view>
+
+    <view class="between mt24">
+      <text class="t14 bold">照片里有谁</text>
+      <text class="t11 faint">可多选<text wx:if="{{pickedCount}}"> · 已选 {{pickedCount}}</text></text>
+    </view>
+    <view class="pchips mt12">
+      <view
+        wx:for="{{people}}"
+        wx:key="id"
+        class="pchip {{item.on ? 'on' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="togglePerson"
+      >{{item.name}}</view>
+    </view>
+
+    <view class="btn primary block mt24" bindtap="submit">提交</view>
+    <view class="foot">原型：不会真正上传，也不会写库</view>
+  </view>
+</view>

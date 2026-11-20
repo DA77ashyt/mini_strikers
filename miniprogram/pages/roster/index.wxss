@@ -1,0 +1,31 @@
+.retired { padding: 26rpx 28rpx 8rpx; }
+.ret {
+  display: flex;
+  align-items: flex-start;
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid var(--line);
+}
+.ret:last-child { border-bottom: 0; }
+.ret-num {
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 20rpx;
+  background: var(--brand-900);
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+  flex: none;
+}
+
+.li-num {
+  width: 88rpx;
+  font-size: 40rpx;
+  font-weight: 700;
+  flex: none;
+  letter-spacing: -1rpx;
+}
+.li-honor { max-width: 260rpx; text-align: right; }

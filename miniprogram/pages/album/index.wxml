@@ -1,0 +1,27 @@
+<view class="yearbar">
+  <scroll-view scroll-x enable-flex show-scrollbar="{{false}}" class="yearbar-in">
+    <view
+      wx:for="{{chips}}"
+      wx:key="year"
+      class="chip {{active === item.year ? 'on' : ''}}"
+      data-year="{{item.year}}"
+      bindtap="pick"
+    >{{item.label}}<text class="chip-n">{{item.n}}</text></view>
+  </scroll-view>
+</view>
+
+<view class="wrap">
+  <view class="t12 faint album-note">{{total}} 张 · 照片由队史编辑陆续补入</view>
+
+  <view class="gal">
+    <view class="gal-item" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bindtap="open">
+      <ph kind="{{item.kind}}" ratio="{{item.ratio}}" radius="18rpx" />
+      <view class="gal-cap">
+        <text class="t12">{{item.title}}</text>
+        <text class="t11 faint">{{item.year}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="foot">照片为演示占位图，接入真照片后这里会显示实拍</view>
+</view>

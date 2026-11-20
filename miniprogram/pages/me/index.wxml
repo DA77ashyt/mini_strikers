@@ -1,0 +1,79 @@
+<view class="page">
+  <view class="mhero">
+    <view class="mhero-in">
+      <view class="row between">
+        <view class="row">
+          <view class="avatar lg white">{{me.ch}}</view>
+          <view class="ml16">
+            <view class="t20 bold white">{{me.name}}</view>
+            <view class="t12 mhero-sub">{{me.unit}} · {{me.years}} · 你在队 {{years}} 年</view>
+          </view>
+        </view>
+        <view class="num-badge">{{me.num}}</view>
+      </view>
+      <view class="mhero-quote" wx:if="{{me.quote}}">“{{me.quote}}”</view>
+    </view>
+  </view>
+
+  <view class="stats card">
+    <view class="sb">
+      <view class="sb-v mono-num">{{my.apps}}</view>
+      <view class="sb-l">出场</view>
+    </view>
+    <view class="sb">
+      <view class="sb-v mono-num">{{my.td}}</view>
+      <view class="sb-l">达阵</view>
+    </view>
+    <view class="sb">
+      <view class="sb-v mono-num">{{my.titles}}</view>
+      <view class="sb-l">冠军</view>
+    </view>
+  </view>
+
+  <view class="wrap">
+    <view class="sec">
+      <text class="h">我的照片</text>
+      <text class="more">{{photos.length}} 张</text>
+    </view>
+    <view class="grid3">
+      <view class="g3i" wx:for="{{photos}}" wx:key="id" data-id="{{item.id}}" bindtap="openPhoto">
+        <ph kind="{{item.kind}}" ratio="1/1" radius="16rpx" />
+      </view>
+    </view>
+
+    <view class="sec" wx:if="{{memories.length}}"><text class="h">我写下的记忆</text></view>
+    <view class="memo" wx:for="{{memories}}" wx:key="text">
+      <text class="memo-q">“</text>{{item.text}}
+      <view class="t11 faint mt8">{{item.year}}</view>
+    </view>
+
+    <view class="card invite mt24">
+      <view class="t16 bold">把老队友找回来</view>
+      <view class="t12 muted mt8">把这张卡片发给还没进馆的人。他进来之后，就能认领自己的号码。</view>
+      <view class="row mt16">
+        <view class="btn primary sm" bindtap="share">分享卡片</view>
+        <view class="btn dark sm ml12" bindtap="copyLink">复制链接</view>
+      </view>
+    </view>
+
+    <view class="card list mt24">
+      <view class="li" bindtap="goSubmit">
+        <text class="li-ico">+</text>
+        <text class="grow">上传一段记忆</text>
+        <text class="li-arw">›</text>
+      </view>
+      <view class="li" bindtap="selfCheck">
+        <text class="li-ico">✓</text>
+        <text class="grow">数据自检</text>
+        <text class="li-arw">›</text>
+      </view>
+      <view class="li" bindtap="about">
+        <text class="li-ico">i</text>
+        <text class="grow">关于队史馆</text>
+        <text class="li-arw">›</text>
+      </view>
+    </view>
+
+    <view class="foot">{{version}}</view>
+  </view>
+</view>

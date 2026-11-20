@@ -1,0 +1,41 @@
+.stitle {
+  font-size: 52rpx;
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: 0.5rpx;
+}
+.byline { padding: 8rpx 0; }
+.slead {
+  font-size: 30rpx;
+  font-weight: 700;
+  line-height: 1.72;
+  padding-left: 24rpx;
+  border-left: 6rpx solid var(--brand-700);
+}
+.sc { line-height: 1.6; }
+
+.sbody { margin-top: 30rpx; }
+.sp {
+  font-family: "Songti SC", "SimSun", serif;
+  font-size: 31rpx;
+  line-height: 1.95;
+  color: #1B2436;
+  margin-bottom: 26rpx;
+  text-align: justify;
+}
+.sp.first::first-letter {
+  float: left;
+  font-size: 74rpx;
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 4rpx 12rpx 0 0;
+  color: var(--brand-800);
+}
+
+.sign {
+  margin-top: 12rpx;
+  text-align: right;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--muted);
+}

@@ -29,6 +29,7 @@
 | 九屏总览图 | [`memorial/out/board9.png`](memorial/out/board9.png) |
 | 训练侧原型（v1，保留） | 本地双击 [`prototype/index.html`](prototype/index.html) |
 | 9 张设计稿 | 本地双击 [`design/mockups.html`](design/mockups.html) |
+| **小程序工程** | 微信开发者工具「导入项目」选仓库根目录（见下节） |
 
 ![队史馆原型 · 九屏总览：队史馆 / 编年史 / 相册 / 照片详情 / 名册 / 个人档案 / 队史长文 / 我的 / 上传记忆](memorial/out/board9.png)
 
@@ -52,6 +53,48 @@
 | `#/selftest` 数据自检 | 把 `validate()` 的结果渲染成表格 |
 
 演示数据：2016–2026 十年、40 位成员、18 条编年、18 张照片、4 篇长文、6 条记忆。**全部是评审用虚构内容**，照片是内联 SVG 占位图。
+
+---
+
+## 小程序工程（`miniprogram/`）
+
+原型是给人看的，这一份是给微信跑的：**原生小程序 + 微信云开发**，9 个页面、5 个 Tab，视觉与 `memorial/` 一致。
+
+### 怎么跑起来
+
+1. 装 [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)（稳定版即可）；
+2. 「导入项目」→ 目录选**仓库根目录**（不是 `miniprogram/`，根目录的 `project.config.json` 已经指好了）；
+3. AppID 选「测试号 / 无 AppID」即可跑通界面；
+4. 拿到正式 AppID 后，只改 `project.config.json` 里的 `appid` 一处（现在是 `touristappid`）。
+
+> 现在是**纯本地数据**：`miniprogram/config.js` 里 `USE_CLOUD: false`，页面读 `miniprogram/data/db.js`（由原型数据生成）。
+> 接云开发时把 `USE_CLOUD` 改 `true`、填 `ENV_ID`，并且只需要改 `miniprogram/utils/model.js` 这一层，页面不用动。
+
+### 三条命令（不需要开发者工具）
+
+```bash
+node tools/sync-data.mjs    # memorial/data.js → miniprogram/data/db.js（唯一数据源，勿手改生成物）
+node tools/check-mini.mjs    # 数据契约校验（与原型同一套规则，退出码 0/1）
+node tools/smoke-mini.mjs    # 无工具冒烟：9 个页面 onLoad + 主要交互 + 事件绑定静态检查
+```
+
+`smoke-mini.mjs` 用极简 stub 加载每个页面的 `index.js`、跑一遍 `onLoad` 与点击逻辑，再静态比对 `wxml` 里 `bindtap` 的函数是否存在——没有任何微信 API 也能拦住大部分低级错误。
+
+### 页面与文件
+
+| 页面 | 路径 | 状态 |
+| --- | --- | --- |
+| 队史馆（Tab） | `pages/home` | 封面 / 数字条 / 引言 / 最近 / 影像 / 毕业墙 / 纪录 |
+| 编年史（Tab） | `pages/timeline` | sticky 年份条 + 时间轴 |
+| 相册（Tab） | `pages/album` | 年份筛选 + 双列瀑布 |
+| 名册（Tab） | `pages/roster` | 现役 / 已毕业 / 退役号码 |
+| 我的（Tab） | `pages/me` | 我的数字 / 照片 / 记忆 / 找回老队友 / 数据自检 |
+| 照片详情 | `pages/photo` | 大图、拍摄信息、照片里的人、上下张 |
+| 个人档案 | `pages/person` | 号码水印、荣誉、他的一句话、他的队史 |
+| 队史长文 | `pages/story` | serif 正文、首字下沉 |
+| 上传记忆 | `pages/submit` | 照片位 / 年份 / 一句话 / 选人（本地演示，不写库） |
+
+公共件：`components/ph`（照片占位，`kind` + `ratio`，将来传 `src` 自动切成真图）、`styles/base.wxss`（token 与原子类）、`utils/model.js`（唯一查询层）。
 
 ---
 
@@ -95,11 +138,23 @@ python build_board.py         # 拼 3×3 总览图 out/board9.png
 
 ```
 ├── index.html                    落地页：原型 / 设计稿 / 文档入口
-├── memorial/                     队史馆原型（本版本的主角）
+├── project.config.json           小程序工程配置（miniprogramRoot / cloudfunctionRoot）
+├── miniprogram/                  小程序（原生 + 云开发，9 页 5 Tab）
+│   ├── app.js / app.json / app.wxss
+│   ├── config.js                 USE_CLOUD / ENV_ID / ME / VERSION
+│   ├── data/db.js                由原型数据生成，勿手改
+│   ├── pages/                    home / timeline / album / photo / roster / person / story / me / submit
+│   ├── components/ph/            照片占位组件（kind + ratio，将来传 src 换真图）
+│   ├── styles/base.wxss          token 与原子类
+│   └── utils/                    model.js（唯一查询层） / validate.js（数据契约）
+├── cloudfunctions/               云函数（目前只有 login，返回 openid）
+├── tools/                        sync-data / check-mini / smoke-mini 三条命令
+├── docs/ICP备案.md               备案操作手册（个人主体、材料、五步流程、避坑）
+├── memorial/                     队史馆原型（视觉与交互的参考实现）
 │   ├── index.html                壳：一份样式基线 + 一份扩展层
 │   ├── styles.css                与 v1 原型逐字节同源的基线样式
 │   ├── memorial.css              队史馆扩展层（含品牌蓝覆盖、照片调色）
-│   ├── data.js                   数据 + validate()，浏览器与 node 同源
+│   ├── data.js                   数据 + validate()，浏览器与 node 同源；也是小程序的唯一数据源
 │   ├── app.js                    路由、渲染、事件委托、SVG 占位照片
 │   ├── check.mjs / smoke.mjs     命令行自检与冒烟测试
 │   ├── shot.ps1 / crop.py        截图与裁剪
@@ -117,10 +172,12 @@ python build_board.py         # 拼 3×3 总览图 out/board9.png
 
 ## 还没做的（诚实清单）
 
-- **队史馆的 PRD 尚未成文**：现在的原型是「设计先行」，需求只有口头的四条（照片、编年史、球队记忆、大事件）；
-- **数据是假的**：40 位成员、18 条编年都是虚构的，接真内容前需要先定「谁能上传、谁审核、老队员怎么认领号码」；
-- **照片是 SVG 占位**：接真照片时删掉 `memorial.css` 末尾的「照片调色」段、把 `photoBox()` 换成 `image` 组件即可；
-- **还没起小程序工程**：`miniprogram/` 与 `cloudfunctions/` 都还没有，迁移路径写在 [`memorial/README.md`](memorial/README.md)；
+- **队史馆的 PRD 尚未成文**：现在是「设计先行 + 工程先行」，需求只有口头的四条（照片、编年史、球队记忆、大事件）；
+- **数据是假的**：40 位成员、18 条编年都是虚构的；小程序跑的是同一份假数据（`miniprogram/data/db.js` 由原型生成）；
+- **照片是占位**：原型用内联 SVG，小程序用 `components/ph` 的 CSS 占位；接真照片时给组件传 `src` 即可，页面不用改；
+- **还没接云开发**：`cloudfunctions/` 只有 `login`，集合、索引、权限规则都还没建，读写仍走本地数据；
+- **上传是假的**：`pages/submit` 只做本地收集 + 提示，不写库——这是备案口径的**有意设计**（投稿制，需编辑审核）；
+- **还没提审**：`project.config.json` 里是 `touristappid`，正式 AppID 与备案号都还没有，见 [`docs/ICP备案.md`](docs/ICP备案.md)；
 - **训练侧的 PRD / ROADMAP / RISKS 仍是 v1 原文**，与纪念版重心不一致，需要时再改。
 
 ---
@@ -142,9 +199,10 @@ Windows 上推送前先开代理（git 配的是 `http.proxy=127.0.0.1:7890`）�
 
 ## 下一步
 
-1. **让队里看真东西**：挑 20 张真照片 + 1 篇真人写的长文，验证「录入成本」能不能接受；
-2. **写队史馆 PRD**：先定审核与认领，再谈功能；
-3. **转小程序**：一页对一页建 WXML，两份 CSS 转两份 WXSS，`data.js` 的集合直连云数据库集合。
+1. **先提备案**：材料清单、五步流程、24 小时短信核验的坑都写在 [`docs/ICP备案.md`](docs/ICP备案.md)，越早提交越好；
+2. **在开发者工具里跑一遍**：导入仓库根目录 → 9 个页面能点通 → 截图给我，我按真机效果修视觉；
+3. **接云开发**：开环境、建集合（`m_photos` / `m_events` / `m_stories` / `m_members`），把 `utils/model.js` 从本地数组换成云调用；
+4. **换真内容**：先拿 20 张真照片 + 1 篇真人长文替换演示数据，验证「录入成本」能不能接受。
 
 排期与分工见 [`ROADMAP-MEMORIAL.md`](ROADMAP-MEMORIAL.md)（M0–M5，约定 10 周做完 MVP），
 需要装的工具见 [`TOOLS.md`](TOOLS.md)（含「本周就能开始的最小工具集」）。

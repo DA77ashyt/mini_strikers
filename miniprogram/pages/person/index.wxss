@@ -1,0 +1,55 @@
+.phero {
+  position: relative;
+  overflow: hidden;
+}
+.phero-in {
+  position: absolute;
+  left: 32rpx;
+  right: 32rpx;
+  bottom: 96rpx;
+  color: #fff;
+}
+.phero-k { color: rgba(255, 255, 255, 0.72); letter-spacing: 1rpx; }
+.phero-name {
+  font-size: 60rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+  margin-top: 10rpx;
+  text-shadow: 0 4rpx 20rpx rgba(6, 8, 26, 0.45);
+}
+.phero-s { color: rgba(255, 255, 255, 0.74); margin-top: 8rpx; }
+.pnum {
+  position: absolute;
+  right: 24rpx;
+  top: 20rpx;
+  font-size: 180rpx;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.14);
+  line-height: 1;
+}
+
+.stats { margin: -56rpx 28rpx 0; position: relative; }
+
+.honor { margin: 0 12rpx 12rpx 0; }
+
+.quote {
+  padding: 30rpx 30rpx 26rpx;
+  background: var(--brand-50);
+  border-left: 6rpx solid var(--brand-700);
+  border-radius: 8rpx 24rpx 24rpx 8rpx;
+}
+.qmark { font-size: 40rpx; color: var(--brand-600); line-height: 0.6; }
+.q-text { font-size: 28rpx; line-height: 1.7; margin-top: 8rpx; color: var(--ink2); }
+.q-by { font-size: 24rpx; font-weight: 700; margin-top: 18rpx; }
+
+.memo {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  font-size: 27rpx;
+  line-height: 1.75;
+  color: var(--ink2);
+  box-shadow: var(--shadow);
+  margin-bottom: 20rpx;
+}
+.memo-q { color: var(--brand-600); font-size: 36rpx; margin-right: 4rpx; }

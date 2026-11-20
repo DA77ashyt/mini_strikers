@@ -1,0 +1,19 @@
+{
+  "description": "STRIKERS 队史馆 · 纪念版小程序",
+  "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "compileType": "miniprogram",
+  "appid": "touristappid",
+  "projectname": "strikers-memorial",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "coverView": true,
+    "nodeModules": false,
+    "ignoreUploadUnusedFiles": true
+  },
+  "condition": {}
+}

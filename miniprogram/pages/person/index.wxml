@@ -1,0 +1,67 @@
+<view class="page" wx:if="{{p}}">
+  <view class="phero">
+    <ph kind="{{cover}}" ratio="4/3" radius="0" />
+    <view class="phero-in">
+      <view class="t12 phero-k">{{p.unit}} · {{p.years}}</view>
+      <view class="phero-name">{{p.name}}</view>
+      <view class="t13 phero-s">在队 {{years}} 年 · {{statusText}}</view>
+    </view>
+    <view class="pnum">{{p.num}}</view>
+  </view>
+
+  <view class="stats card">
+    <view class="sb">
+      <view class="sb-v mono-num">{{stats.shots}}</view>
+      <view class="sb-l">影像</view>
+    </view>
+    <view class="sb">
+      <view class="sb-v mono-num">{{stats.honors}}</view>
+      <view class="sb-l">荣誉</view>
+    </view>
+    <view class="sb">
+      <view class="sb-v mono-num">{{stats.years}}</view>
+      <view class="sb-l">在队年数</view>
+    </view>
+  </view>
+
+  <view class="wrap">
+    <view class="row wrap-t mt24" wx:if="{{honors.length}}">
+      <view class="tag honor" wx:for="{{honors}}" wx:key="*this">{{item}}</view>
+    </view>
+
+    <view class="quote mt24" wx:if="{{p.quote}}">
+      <text class="qmark">“</text>
+      <view class="q-text">{{p.quote}}</view>
+      <view class="q-by">— {{p.name}}</view>
+    </view>
+
+    <view class="sec" wx:if="{{memories.length}}"><text class="h">他写下的记忆</text></view>
+    <view class="memo" wx:for="{{memories}}" wx:key="text">
+      <text class="memo-q">“</text>{{item.text}}
+      <view class="t11 faint mt8">{{item.year}}</view>
+    </view>
+
+    <view class="sec">
+      <text class="h">照片里的他</text>
+      <text class="more">{{photos.length}} 张</text>
+    </view>
+    <view class="grid3">
+      <view class="g3i" wx:for="{{photos}}" wx:key="id" data-id="{{item.id}}" bindtap="openPhoto">
+        <ph kind="{{item.kind}}" ratio="1/1" radius="16rpx" />
+      </view>
+    </view>
+
+    <view class="sec" wx:if="{{events.length}}"><text class="h">他的队史</text></view>
+    <view class="card list" wx:if="{{events.length}}">
+      <view class="li" wx:for="{{events}}" wx:key="id" data-id="{{item.id}}" bindtap="openEvent">
+        <view class="grow">
+          <view class="t11 faint mono-num">{{item.d}} · {{item.kindName}}</view>
+          <view class="t14 mt6">{{item.title}}</view>
+        </view>
+        <text class="li-arw">›</text>
+      </view>
+    </view>
+
+    <view class="foot">资料由队史编辑维护 · 有出入请找他改</view>
+  </view>
+</view>

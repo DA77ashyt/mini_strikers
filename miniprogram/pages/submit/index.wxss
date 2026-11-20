@@ -1,0 +1,53 @@
+.upload {
+  height: 320rpx;
+  border: 3rpx dashed var(--brand-100);
+  border-radius: 28rpx;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.up-plus {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-size: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.up-img { width: 100%; height: 100%; }
+
+.ychips { display: flex; flex-wrap: wrap; }
+.ychips .chip { margin: 0 16rpx 16rpx 0; }
+
+.ta {
+  background: #fff;
+  border: 2rpx solid var(--line);
+  border-radius: 24rpx;
+  padding: 24rpx;
+}
+.ta-in { width: 100%; height: 180rpx; font-size: 28rpx; line-height: 1.6; }
+.ta-ph { color: var(--faint); }
+.ta-n { text-align: right; }
+
+.pchips { display: flex; flex-wrap: wrap; }
+.pchip {
+  padding: 14rpx 24rpx;
+  border-radius: 16rpx;
+  background: #fff;
+  border: 2rpx solid var(--line);
+  font-size: 26rpx;
+  color: var(--ink2);
+  margin: 0 14rpx 14rpx 0;
+}
+.pchip.on {
+  background: var(--brand-100);
+  border-color: var(--brand-600);
+  color: var(--brand-800);
+  font-weight: 600;
+}

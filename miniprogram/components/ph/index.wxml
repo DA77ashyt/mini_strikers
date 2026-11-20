@@ -1,0 +1,53 @@
+<view class="ph ph-{{kind}}" style="padding-bottom:{{pb}}%;border-radius:{{radius}};">
+  <image wx:if="{{src}}" class="ph-img" src="{{src}}" mode="aspectFill" />
+  <block wx:else>
+    <view class="art art-{{kind}}">
+      <!-- 更衣室：挂着的球衣 -->
+      <block wx:if="{{kind === 'locker'}}">
+        <view class="jersey" style="left:8%;"></view>
+        <view class="jersey" style="left:30%;"></view>
+        <view class="jersey" style="left:52%;"></view>
+        <view class="jersey" style="left:74%;"></view>
+      </block>
+      <!-- 球场：码线 -->
+      <block wx:if="{{kind === 'field' || kind === 'team' || kind === 'empty'}}">
+        <view class="pitch"></view>
+        <view class="fig" style="left:18%;"></view>
+        <view class="fig" style="left:38%;"></view>
+        <view class="fig" style="left:58%;"></view>
+        <view class="fig" style="left:76%;"></view>
+      </block>
+      <!-- 奖杯 -->
+      <block wx:if="{{kind === 'trophy'}}">
+        <view class="cup"></view>
+        <view class="cup-foot"></view>
+      </block>
+      <!-- 庆祝：彩带 -->
+      <block wx:if="{{kind === 'celebration'}}">
+        <view class="dot" style="left:14%;top:26%;"></view>
+        <view class="dot" style="left:38%;top:16%;"></view>
+        <view class="dot" style="left:62%;top:30%;"></view>
+        <view class="dot" style="left:80%;top:20%;"></view>
+        <view class="dot" style="left:26%;top:52%;"></view>
+        <view class="dot" style="left:70%;top:58%;"></view>
+      </block>
+      <!-- 大巴：车窗 + 落日 -->
+      <block wx:if="{{kind === 'bus'}}">
+        <view class="win"></view>
+        <view class="sun"></view>
+      </block>
+      <!-- 队徽环 -->
+      <block wx:if="{{kind === 'ring'}}">
+        <view class="ring"></view>
+        <text class="ring-x">X</text>
+      </block>
+      <!-- 泥地：脚印 -->
+      <block wx:if="{{kind === 'mud'}}">
+        <view class="boot" style="left:24%;top:58%;"></view>
+        <view class="boot" style="left:56%;top:44%;"></view>
+      </block>
+    </view>
+    <view class="vig"></view>
+  </block>
+  <text wx:if="{{label}}" class="ph-label">{{label}}</text>
+</view>

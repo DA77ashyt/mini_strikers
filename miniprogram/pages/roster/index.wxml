@@ -1,0 +1,35 @@
+<view class="wrap">
+  <view class="seg">
+    <view class="seg-i {{tab === 'active' ? 'on' : ''}}" data-tab="active" bindtap="switchTab">现役 {{active.length}}</view>
+    <view class="seg-i {{tab === 'alumni' ? 'on' : ''}}" data-tab="alumni" bindtap="switchTab">已毕业 {{alumni.length}}</view>
+  </view>
+
+  <view class="card retired mt20">
+    <view class="t12 muted">退役号码</view>
+    <view class="ret" wx:for="{{retired}}" wx:key="num">
+      <view class="ret-num">{{item.num}}</view>
+      <view class="grow">
+        <view class="t15 bold">{{item.name}}<text class="t12 faint" wx:if="{{item.year}}"> · {{item.year}}</text></view>
+        <view class="t12 muted mt8">{{item.note}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="between mt24">
+    <text class="t14 bold">{{tab === 'active' ? '现役队员' : '已毕业队员'}}</text>
+    <text class="t11 faint">{{tab === 'active' ? '按号码' : '按入队年份'}}</text>
+  </view>
+
+  <view class="card list mt12">
+    <view class="li" wx:for="{{tab === 'active' ? active : alumni}}" wx:key="id" data-id="{{item.id}}" bindtap="open">
+      <text class="li-num mono-num">{{item.num}}</text>
+      <view class="grow">
+        <view class="t15 bold">{{item.name}}</view>
+        <view class="t11 muted mt6">{{item.unit}} · {{item.years}}</view>
+      </view>
+      <text class="t11 faint li-honor">{{item.honor}}</text>
+    </view>
+  </view>
+
+  <view class="foot">共 {{total}} 人收录在册 · 更多老队友正在找回</view>
+</view>

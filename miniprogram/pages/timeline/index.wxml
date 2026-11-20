@@ -1,0 +1,46 @@
+<view class="yearbar">
+  <scroll-view scroll-x enable-flex show-scrollbar="{{false}}" class="yearbar-in">
+    <view
+      wx:for="{{years}}"
+      wx:key="*this"
+      class="chip {{active === item ? 'on' : ''}}"
+      data-year="{{item}}"
+      bindtap="jump"
+    >{{item}}</view>
+  </scroll-view>
+</view>
+
+<view class="wrap">
+  <view class="yr" wx:for="{{groups}}" wx:for-item="g" wx:key="year" id="y{{g.year}}">
+    <view class="yr-h">{{g.year}}</view>
+
+    <view class="tl">
+      <view class="tli" wx:for="{{g.events}}" wx:for-item="e" wx:key="id">
+        <view class="tl-rail">
+          <view class="tl-dot"></view>
+          <view class="tl-line"></view>
+        </view>
+
+        <view class="tl-body" data-id="{{e.id}}" bindtap="openEvent">
+          <view class="row g8">
+            <text class="t13 bold mono-num">{{e.d}}</text>
+            <text class="tag">{{e.kind}}</text>
+          </view>
+          <view class="t17 mt8">{{e.title}}</view>
+          <view class="t13 muted mt8">{{e.summary}}</view>
+
+          <ph class="mt12" kind="{{e.kind_raw}}" ratio="4/3" radius="20rpx" />
+
+          <view class="between mt12">
+            <view class="row">
+              <view class="avatar sm" wx:for="{{e.people}}" wx:for-item="p" wx:key="id" style="margin-right:8rpx;">{{p.ch}}</view>
+            </view>
+            <text class="t13 brand" wx:if="{{e.hasStory}}">读这一段 ›</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="foot">共 {{groups.length}} 个年份 · 从上往下读就是队史</view>
+</view>
